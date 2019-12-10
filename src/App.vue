@@ -1,19 +1,13 @@
 <template>
     <div id="app">
-        <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-        <Calculator />
+        <p>App</p>
+        <router-view />
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import Calculator from './components/Calculator.vue'
+import { Vue } from 'vue-property-decorator'
 
-@Component({
-    components: {
-        Calculator,
-    },
-})
 export default class App extends Vue {}
 </script>
 
