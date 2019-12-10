@@ -1,8 +1,6 @@
 <template>
     <div class="home">
-        <img alt="Vue logo" src="../assets/logo.png" />
-        <h1>Home</h1>
-        <Calculator />
+        <Calculator :digit="1" />
     </div>
 </template>
 

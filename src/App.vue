@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <p>App</p>
+        <p>COOT-CULATOR</p>
         <router-view />
     </div>
 </template>
