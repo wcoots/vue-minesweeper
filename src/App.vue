@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-        <p>COOT-CULATOR</p>
         <router-view />
     </div>
 </template>

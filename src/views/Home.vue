@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <Calculator :digit="1" />
+        <Calculator />
     </div>
 </template>
 
@@ -11,9 +11,6 @@ export default {
     name: 'Home',
     components: {
         Calculator,
-    },
-    created() {
-        console.log('hello')
     },
 }
 </script>
