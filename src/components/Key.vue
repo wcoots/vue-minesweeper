@@ -18,7 +18,7 @@ import Vue from 'vue'
 export default Vue.extend({
     name: 'Key',
     props: {
-        isBomb: {
+        is_mine: {
             type: Boolean,
             required: true,
         },
@@ -39,8 +39,10 @@ export default Vue.extend({
             this.clicked = true
         },
         release() {
-            if (this.isBomb) {
+            if (this.is_mine) {
                 this.value = '💣'
+            } else if (this.touching === 0) {
+                this.value = ''
             } else {
                 this.value = `${this.touching}`
             }

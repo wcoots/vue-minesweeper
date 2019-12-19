@@ -2,33 +2,8 @@
     <div>
         <p>Minesweeper</p>
         <div class="grid" :style="gridStyles">
-            <!-- <div class="row" v-for="row in grid" v-bind:key="row[0].val">
-                <div v-for="item in row" v-bind:key="item.val">
-                    <Key :isBomb="item.bomb" :touching="item.touching" />
-                </div>
-            </div>-->
-            <!-- class="row" :style="rowStyles"  -->
-            <div v-for="row in yLength" v-bind:key="row">
-                <div v-for="column in xLength" v-bind:key="column">
-                    <Key
-                        :isBomb="
-                            grid.find(
-                                k =>
-                                    k.row === row - 1 &&
-                                    k.column === column - 1,
-                            ).bomb
-                        "
-                        :touching="
-                            grid.find(
-                                k =>
-                                    k.row === row - 1 &&
-                                    k.column === column - 1,
-                            ).touching
-                        "
-                    />
-
-                    <p>{{ row }} - {{ column }}</p>
-                </div>
+            <div v-for="row in y_length" v-bind:key="row">
+                <Row :keys="grid.filter(key => key.row === row - 1)" />
             </div>
         </div>
     </div>
@@ -36,59 +11,40 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Key from './Key.vue'
-// import * from '../scripts/scripts'
-// import wasd from '../scripts/scripts'
+import Row from './Row.vue'
 import { createGrid } from '../scripts/scripts'
-
-declare interface Key {
-    val: number
-    row: number
-    column: number
-    mine: boolean
-    touching: number
-}
+import { Key } from '../types/types'
 
 export default Vue.extend({
     name: 'Calculator',
     data() {
         return {
             grid: [] as Key[],
-            xLength: 10,
-            yLength: 7,
+            x_length: 10,
+            y_length: 7,
+            total_mines: 12,
         }
     },
     components: {
-        Key,
+        Row,
     },
     created() {
-        this.grid = createGrid(this.xLength, this.yLength)
+        this.grid = createGrid(this.x_length, this.y_length, this.total_mines)
     },
     computed: {
-        gridStyles() {
+        gridStyles(): { width: string; height: string } {
             return {
-                width: `${30 * this.xLength}px`,
-                height: `${30 * this.yLength}px`,
-            }
-        },
-        rowStyles() {
-            return {
-                width: `${30 * this.xLength}px`,
+                width: `${30 * this.x_length}px`,
+                height: `${30 * this.y_length}px`,
             }
         },
     },
 })
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .grid {
     border: 2px solid #8c8c8c;
     display: inline-block;
-}
-.row {
-    height: 30px;
-    display: inline-block;
-    vertical-align: top;
 }
 </style>
