@@ -1,16 +1,16 @@
 <template>
     <div class="home">
-        <Calculator />
+        <Grid />
     </div>
 </template>
 
 <script>
-import Calculator from '../components/Calculator.vue'
+import Grid from '../components/Grid.vue'
 
 export default {
     name: 'Home',
     components: {
-        Calculator,
+        Grid,
     },
 }
 </script>

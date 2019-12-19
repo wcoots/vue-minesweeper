@@ -16,7 +16,7 @@ import { createGrid } from '../scripts/scripts'
 import { Key } from '../types/types'
 
 export default Vue.extend({
-    name: 'Calculator',
+    name: 'Grid',
     data() {
         return {
             grid: [] as Key[],

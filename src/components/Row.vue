@@ -11,7 +11,7 @@ import Vue from 'vue'
 import Key from './Key.vue'
 
 export default Vue.extend({
-    name: 'Calculator',
+    name: 'Row',
     props: {
         keys: {
             type: Array,
