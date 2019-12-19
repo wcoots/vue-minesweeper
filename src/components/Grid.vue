@@ -3,7 +3,7 @@
         <p>Minesweeper</p>
         <div class="grid" :style="gridStyles">
             <div v-for="row in y_length" v-bind:key="row">
-                <Row :keys="grid.filter(key => key.row === row - 1)" />
+                <Row :tiles="grid.filter(tile => tile.row === row - 1)" />
             </div>
         </div>
     </div>
@@ -13,13 +13,13 @@
 import Vue from 'vue'
 import Row from './Row.vue'
 import { createGrid } from '../scripts/scripts'
-import { Key } from '../types/types'
+import { Tile } from '../types/types'
 
 export default Vue.extend({
     name: 'Grid',
     data() {
         return {
-            grid: [] as Key[],
+            grid: [] as Tile[],
             x_length: 10,
             y_length: 7,
             total_mines: 12,

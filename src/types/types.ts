@@ -1,4 +1,4 @@
-export interface Key {
+export interface Tile {
     val: number
     row: number
     column: number

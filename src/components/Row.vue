@@ -1,30 +1,30 @@
 <template>
     <div>
-        <div v-for="key in keys" v-bind:key="key.mine">
-            <Key :is_mine="key.mine" :touching="key.touching" />
+        <div v-for="tile in tiles" v-bind:key="tile.mine">
+            <Tile :is_mine="tile.mine" :touching="tile.touching" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Key from './Key.vue'
+import Tile from './Tile.vue'
 
 export default Vue.extend({
     name: 'Row',
     props: {
-        keys: {
+        tiles: {
             type: Array,
             required: true,
         },
     },
     components: {
-        Key,
+        Tile,
     },
     computed: {
         rowStyles(): object {
             return {
-                width: `${30 * this.keys.length}px`,
+                width: `${30 * this.tiles.length}px`,
             }
         },
     },

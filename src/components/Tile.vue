@@ -16,7 +16,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-    name: 'Key',
+    name: 'Tile',
     props: {
         is_mine: {
             type: Boolean,
@@ -89,7 +89,7 @@ export default Vue.extend({
     font-size: 10px;
     float: left;
 }
-.key {
+.tile {
     display: inline-block;
     vertical-align: middle;
 }
