@@ -142,6 +142,6 @@ export const createGrid = (
     return { grid, zero_groups }
 }
 
-export const wasd2 = () => {
-    console.log('hows it going')
+export const fakeFunction = (input: number) => {
+    return input + 1
 }
