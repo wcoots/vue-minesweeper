@@ -13,23 +13,31 @@
 import Vue from 'vue'
 import Row from './Row.vue'
 import { createGrid } from '../scripts/scripts'
-import { Tile } from '../types/types'
+import { Tile, ZeroGroup } from '../types/types'
+
+interface Wasd {
+    grid: Tile[]
+    zero_groups: ZeroGroup[]
+}
 
 export default Vue.extend({
     name: 'Grid',
     data() {
         return {
-            grid: [] as Tile[],
             x_length: 10,
             y_length: 7,
             total_mines: 12,
+            grid: [] as Tile[],
+            zero_groups: [] as ZeroGroup[],
         }
     },
     components: {
         Row,
     },
     created() {
-        this.grid = createGrid(this.x_length, this.y_length, this.total_mines)
+        const wasd: Wasd = createGrid(this.x_length, this.y_length, this.total_mines)
+        this.grid = wasd.grid
+        this.zero_groups = wasd.zero_groups
     },
     computed: {
         gridStyles(): { width: string; height: string } {

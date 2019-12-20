@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="tile in tiles" v-bind:key="tile.mine">
+        <div v-for="tile in tiles" v-bind:key="tile.id">
             <Tile :is_mine="tile.mine" :touching="tile.touching" />
         </div>
     </div>
@@ -22,7 +22,7 @@ export default Vue.extend({
         Tile,
     },
     computed: {
-        rowStyles(): object {
+        rowStyles(): { width: string } {
             return {
                 width: `${30 * this.tiles.length}px`,
             }
