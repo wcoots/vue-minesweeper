@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="tile in tiles" v-bind:key="tile.id">
-            <Tile :is_mine="tile.mine" :touching="tile.touching" />
+            <Tile :tile_id="tile.id" />
         </div>
     </div>
 </template>

@@ -25,19 +25,19 @@ export default Vue.extend({
     data() {
         return {
             x_length: 10,
-            y_length: 7,
-            total_mines: 12,
+            y_length: 10,
+            total_mines: 15,
             grid: [] as Tile[],
-            zero_groups: [] as ZeroGroup[],
         }
     },
     components: {
         Row,
     },
     created() {
-        const wasd: Wasd = createGrid(this.x_length, this.y_length, this.total_mines)
-        this.grid = wasd.grid
-        this.zero_groups = wasd.zero_groups
+        const { grid, zero_groups } = createGrid(this.x_length, this.y_length, this.total_mines)
+        this.grid = grid
+        this.$store.commit('setGrid', grid)
+        this.$store.commit('setZeroGroups', zero_groups)
     },
     computed: {
         gridStyles(): { width: string; height: string } {

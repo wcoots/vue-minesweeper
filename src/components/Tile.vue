@@ -1,52 +1,56 @@
 <template>
     <div
         v-bind:class="{
-            unclicked: !clicked && !released,
-            clicked: clicked && !released,
-            released: clicked && released,
+            unclicked: unclicked,
+            clicked: clicked,
+            released: released,
         }"
         @mousedown="click"
         v-on:click="release"
     >
-        {{ clicked && released ? value : '' }}
+        {{ tile_info.clicked && tile_info.released ? tile_info.value : '' }}
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { Tile } from '../types/types'
 
 export default Vue.extend({
     name: 'Tile',
     props: {
-        is_mine: {
-            type: Boolean,
-            required: true,
-        },
-        touching: {
+        tile_id: {
             type: Number,
             required: true,
         },
     },
-    data() {
-        return {
-            clicked: false,
-            released: false,
-            value: '',
-        }
+    computed: {
+        tile_info(): Tile {
+            return this.$store.getters.getTileInfo(this.tile_id)
+        },
+        unclicked(): boolean {
+            return !this.tile_info.clicked && !this.tile_info.released
+        },
+        clicked(): boolean {
+            return this.tile_info.clicked && !this.tile_info.released
+        },
+        released(): boolean {
+            return this.tile_info.clicked && this.tile_info.released
+        },
     },
     methods: {
         click() {
-            this.clicked = true
+            if (!this.tile_info.clicked) {
+                this.$store.commit('setTileAsClicked', this.tile_id)
+            }
         },
         release() {
-            if (this.is_mine) {
-                this.value = '💣'
-            } else if (this.touching === 0) {
-                this.value = ''
-            } else {
-                this.value = `${this.touching}`
+            if (!this.tile_info.released) {
+                this.$store.commit('setTileAsReleased', this.tile_id)
+                if (this.tile_info.touching === 0) {
+                    this.$store.dispatch('getZeroGroup', this.tile_id)
+                }
             }
-            this.released = true
         },
     },
 })

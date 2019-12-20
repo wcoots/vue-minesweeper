@@ -1,5 +1,7 @@
 import { Tile, TileGroup, ZeroGroup } from '../types/types'
 
+const _ = require('lodash')
+
 const getMines = (x_length: number, y_length: number, total_mines: number): number[] => {
     const mines: number[] = []
 
@@ -22,8 +24,11 @@ const getTiles = (x_length: number, y_length: number, mines: number[]): Tile[] =
                 id: tile_id,
                 row: i,
                 column: j,
+                value: '',
                 mine: mines.indexOf(tile_id) !== -1,
                 touching: 0,
+                clicked: false,
+                released: false,
             })
         }
     }
@@ -55,19 +60,28 @@ const getTouchingValues = (x_length: number, y_length: number, tiles: Tile[]): T
     tiles.forEach((tile: Tile) => {
         const surrounding_tiles: (Tile | null | undefined)[] = getSurroundingTiles(x_length, y_length, tile, tiles)
 
-        grid.push({
+        const new_tile: Tile = {
             id: tile.id,
             row: tile.row,
             column: tile.column,
+            value: '',
             mine: tile.mine,
             touching: surrounding_tiles.filter(t => !!t && t.mine).length,
-        })
+            clicked: false,
+            released: false,
+        }
+
+        new_tile.value = new_tile.mine ? '💣' : new_tile.touching ? `${new_tile.touching}` : ''
+
+        grid.push(new_tile)
     })
 
     return grid
 }
 
 const getZeroGroups = (x_length: number, y_length: number, grid: Tile[]): ZeroGroup[] => {
+    // TODO: clean up this mess
+
     const zero_tiles: Tile[] = grid.filter(tile => tile.touching === 0 && tile.mine === false)
     const tile_groups: TileGroup[] = []
     zero_tiles.forEach((tile: Tile) => {
@@ -78,32 +92,36 @@ const getZeroGroups = (x_length: number, y_length: number, grid: Tile[]): ZeroGr
         })
     })
     const zero_groups: ZeroGroup[] = []
-    const zero_tile_ids: number[] = zero_tiles.map((zero_tile: Tile) => zero_tile.id)
-    tile_groups.forEach((tile_group: TileGroup) => {
-        if (zero_tile_ids.indexOf(tile_group.tile_id) !== -1) {
-            zero_tile_ids.splice(zero_tile_ids.indexOf(tile_group.tile_id))
-            // TODO: replaces with _.intersection
-            let surrounding_zero_tile_ids: number[] = tile_group.surrounding_tile_ids.filter(tile_id => zero_tile_ids.includes(tile_id))
-            const wasd = true
-            const zero_group: ZeroGroup = { zero_tile_ids: [], surrounding_tile_ids: [] }
-            // while (wasd) {
-            //     zero_group.zero_tile_ids.push(...surrounding_zero_tile_ids)
-            //     surrounding_zero_tile_ids = []
-            //     const surrounding_tile_groups =
+    let zero_tile_ids: number[] = zero_tiles.map((zero_tile: Tile) => zero_tile.id)
 
-            // }
-            // console.log('TILE:')
-            // console.log(zero_group.zero_tile_ids[0])
-            // console.log('SURROUNDING TILES')
-            // console.log(zero_group.surrounding_tile_ids)
-            // console.log('ALL ZERO TILES')
-            // console.log(zero_tile_ids)
-            // console.log('INTERSECTION')
-            // console.log(surrounding_zero_tile_ids)
-            // console.log('\n====================================\n')
+    while (zero_tile_ids.length) {
+        const new_group: ZeroGroup = { zero_tile_ids: [], surrounding_tile_ids: [] }
+        const group_starter_id: number = zero_tile_ids[0]
+        const group_starter: TileGroup | undefined = tile_groups.find(tg => tg.tile_id === group_starter_id)
+        if (group_starter) {
+            new_group.zero_tile_ids.push(group_starter.tile_id)
+            new_group.surrounding_tile_ids.push(...group_starter.surrounding_tile_ids)
+            let group_zeros: number[] = _.intersection(zero_tile_ids, group_starter.surrounding_tile_ids)
+            zero_tile_ids = zero_tile_ids.filter(t => t !== group_starter_id) // delete from zero_tile_ids
+
+            while (group_zeros.length) {
+                const current_tile_id: number = group_zeros[0]
+                const current_tile: TileGroup | undefined = tile_groups.find(tg => tg.tile_id === current_tile_id)
+                if (current_tile) {
+                    const new_group_zeros: number[] = _.intersection(zero_tile_ids, current_tile.surrounding_tile_ids)
+                    group_zeros.push(...new_group_zeros)
+                    new_group.zero_tile_ids.push(current_tile.tile_id)
+                    new_group.surrounding_tile_ids.push(...current_tile.surrounding_tile_ids)
+                    zero_tile_ids = zero_tile_ids.filter(t => t !== current_tile_id) // delete from zero_tile_ids
+                    group_zeros = group_zeros.filter(gz => gz !== current_tile_id)
+                }
+            }
+            new_group.surrounding_tile_ids = _.uniq(new_group.surrounding_tile_ids.filter((tile_id: number) => new_group.zero_tile_ids.indexOf(tile_id) === -1))
+            zero_groups.push(new_group)
         }
-    })
-    return []
+    }
+
+    return zero_groups
 }
 
 export const createGrid = (

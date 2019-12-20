@@ -2,8 +2,11 @@ export interface Tile {
     id: number
     row: number
     column: number
+    value: string
     mine: boolean
     touching: number
+    clicked: boolean
+    released: boolean
 }
 
 export interface TileGroup {
