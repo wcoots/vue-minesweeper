@@ -5,13 +5,16 @@
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "lint": "vue-cli-service lint"
+        "lint": "vue-cli-service lint",
+        "testscript": "node src/test",
+        "testrun": "yarn testscript"
     },
     "dependencies": {
         "core-js": "^3.4.3",
         "eslint-config-prettier": "^6.7.0",
         "eslint-plugin-prettier": "^3.1.1",
         "lodash": "^4.17.15",
+        "random-seed": "^0.3.0",
         "vue": "^2.6.10",
         "vue-class-component": "^7.0.2",
         "vue-property-decorator": "^8.3.0",

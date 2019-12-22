@@ -1,10 +1,7 @@
 <template>
-    <div>
-        <p>Minesweeper</p>
-        <div class="grid" :style="gridStyles">
-            <div v-for="row in y_length" v-bind:key="row">
-                <Row :tiles="grid.filter(tile => tile.row === row - 1)" />
-            </div>
+    <div class="grid" :style="gridStyles" oncontextmenu="return false;">
+        <div v-for="row in y_length" v-bind:key="row">
+            <Row :tiles="grid.filter(tile => tile.row === row - 1)" />
         </div>
     </div>
 </template>
@@ -53,6 +50,7 @@ export default Vue.extend({
 <style scoped>
 .grid {
     border: 2px solid #8c8c8c;
-    display: inline-block;
+    display: block;
+    clear: both;
 }
 </style>

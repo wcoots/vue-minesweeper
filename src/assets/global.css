@@ -1,0 +1,13 @@
+.tile {
+    width: 26px;
+    height: 26px;
+    color: black;
+    background-color: #bdbdbd;
+    font-weight: bold;
+    font-size: 20px;
+    border-left: 2px solid #eeeeee;
+    border-right: 2px solid #8b8b8b;
+    border-top: 2px solid #eeeeee;
+    border-bottom: 2px solid #8b8b8b;
+    text-align: center;
+}

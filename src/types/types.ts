@@ -16,3 +16,8 @@ export interface ZeroGroup {
     zero_tile_ids: number[]
     surrounding_tile_ids: number[]
 }
+
+export interface ClickType {
+    type: 'normal' | 'flag'
+    value: '☜' | '⚑'
+}

@@ -13,6 +13,7 @@ module.exports = {
         'prefer-default-export': 'off',
         'no-restricted-syntax': 'off',
         'no-nested-ternary': 'off',
+        'no-lonely-if': 'off',
     },
     parserOptions: {
         parser: '@typescript-eslint/parser',

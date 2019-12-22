@@ -1,12 +1,14 @@
 import { Tile, TileGroup, ZeroGroup } from '../types/types'
 
 const _ = require('lodash')
+const gen = require('random-seed')
 
-const getMines = (x_length: number, y_length: number, total_mines: number): number[] => {
+const getMines = (x_length: number, y_length: number, total_mines: number, seed?: string): number[] => {
+    const rand = seed ? gen.create(seed) : gen.create()
     const mines: number[] = []
 
     while (mines.length < total_mines) {
-        const x = Math.floor(Math.random() * (x_length * y_length - 1) + 1)
+        const x = rand.range(x_length * y_length) + 1
         if (mines.indexOf(x) === -1) mines.push(x)
     }
 
