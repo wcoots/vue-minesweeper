@@ -10,7 +10,7 @@ import Vue from 'vue'
 import ClickType from './ClickType.vue'
 
 export default Vue.extend({
-    name: 'Home',
+    name: 'Header',
     components: {
         ClickType,
     },
