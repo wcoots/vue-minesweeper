@@ -7,7 +7,6 @@
         :style="numberColour"
         @click.left="leftClick"
         @click.right="rightClick"
-        oncontextmenu="return false;"
     >
         {{ tile_info.value }}
     </div>
@@ -15,7 +14,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Tile } from '../types/types'
+import { Tile } from '@/types/types'
 
 export default Vue.extend({
     name: 'Tile',
@@ -66,17 +65,6 @@ export default Vue.extend({
 
 <style scoped>
 .tile {
-    width: 26px;
-    height: 26px;
-    color: black;
-    background-color: #bdbdbd;
-    font-weight: bold;
-    font-size: 20px;
-    border-left: 2px solid #eeeeee;
-    border-right: 2px solid #8b8b8b;
-    border-top: 2px solid #eeeeee;
-    border-bottom: 2px solid #8b8b8b;
-    text-align: center;
     float: left;
 }
 .clicked {

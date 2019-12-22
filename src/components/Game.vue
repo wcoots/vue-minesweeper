@@ -1,0 +1,31 @@
+<template>
+    <div class="game" oncontextmenu="return false;">
+        <Header />
+        <Grid />
+    </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import Header from './Header.vue'
+import Grid from './Grid.vue'
+
+export default Vue.extend({
+    name: 'Home',
+    components: {
+        Header,
+        Grid,
+    },
+})
+</script>
+
+<style scoped>
+.game {
+    display: inline-block;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+</style>

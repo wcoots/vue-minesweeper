@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Tile, ZeroGroup } from '../types/types'
+import { Tile, ZeroGroup, ClickType } from '../types/types'
 
 Vue.use(Vuex)
 
@@ -8,10 +8,14 @@ export default new Vuex.Store({
     state: {
         grid: [] as Tile[],
         zero_groups: [] as ZeroGroup[],
+        click_type: { type: 'normal', value: '☜' } as ClickType,
     },
     getters: {
         getTileInfo: state => (tile_id: number) => {
             return state.grid.find(tile => tile.id === tile_id)
+        },
+        getClickTypeValue: state => () => {
+            return state.click_type.value
         },
     },
     mutations: {
@@ -37,22 +41,33 @@ export default new Vuex.Store({
                 }
             }
         },
+        changeClickType(state) {
+            state.click_type = state.click_type.type === 'normal' ? { type: 'flag', value: '⚑' } : { type: 'normal', value: '☜' }
+        },
     },
     actions: {
         leftClickTile({ commit, state }, tile_id: number) {
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
-                    if (tile.status === 'flagged' || tile.status === 'uncertain') {
-                        commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
-                    } else if (tile.status === 'unclicked') {
-                        if (tile.touching === 0 && !tile.mine) {
-                            const zero_group: ZeroGroup | undefined = state.zero_groups.find((group: ZeroGroup) => group.zero_tile_ids.indexOf(tile_id) !== -1)
-                            if (zero_group) {
-                                zero_group.zero_tile_ids.forEach((id: number) => commit('setTileStatus', { tile_id: id, status: 'clicked' }))
-                                zero_group.surrounding_tile_ids.forEach((id: number) => commit('setTileStatus', { tile_id: id, status: 'clicked' }))
+                    if (state.click_type.type === 'normal') {
+                        if (tile.status === 'flagged' || tile.status === 'uncertain') {
+                            commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
+                        } else if (tile.status === 'unclicked') {
+                            if (tile.touching === 0 && !tile.mine) {
+                                const zero_group: ZeroGroup | undefined = state.zero_groups.find((group: ZeroGroup) => group.zero_tile_ids.indexOf(tile_id) !== -1)
+                                if (zero_group) {
+                                    zero_group.zero_tile_ids.forEach((id: number) => commit('setTileStatus', { tile_id: id, status: 'clicked' }))
+                                    zero_group.surrounding_tile_ids.forEach((id: number) => commit('setTileStatus', { tile_id: id, status: 'clicked' }))
+                                }
+                            } else {
+                                commit('setTileStatus', { tile_id: tile.id, status: 'clicked' })
                             }
-                        } else {
-                            commit('setTileStatus', { tile_id: tile.id, status: 'clicked' })
+                        }
+                    } else if (state.click_type.type === 'flag') {
+                        if (tile.status === 'flagged') {
+                            commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
+                        } else if (tile.status !== 'clicked') {
+                            commit('setTileStatus', { tile_id: tile.id, status: 'flagged' })
                         }
                     }
                 }
@@ -61,12 +76,20 @@ export default new Vuex.Store({
         rightClickTile({ commit, state }, tile_id: number) {
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
-                    if (tile.status === 'unclicked') {
-                        commit('setTileStatus', { tile_id: tile.id, status: 'flagged' })
-                    } else if (tile.status === 'flagged') {
-                        commit('setTileStatus', { tile_id: tile.id, status: 'uncertain' })
-                    } else if (tile.status === 'uncertain') {
-                        commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
+                    if (state.click_type.type === 'normal') {
+                        if (tile.status === 'unclicked') {
+                            commit('setTileStatus', { tile_id: tile.id, status: 'flagged' })
+                        } else if (tile.status === 'flagged') {
+                            commit('setTileStatus', { tile_id: tile.id, status: 'uncertain' })
+                        } else if (tile.status === 'uncertain') {
+                            commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
+                        }
+                    } else if (state.click_type.type === 'flag') {
+                        if (tile.status === 'uncertain') {
+                            commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
+                        } else if (tile.status !== 'clicked') {
+                            commit('setTileStatus', { tile_id: tile.id, status: 'uncertain' })
+                        }
                     }
                 }
             }
