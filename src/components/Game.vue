@@ -11,7 +11,7 @@ import Header from './Header.vue'
 import Grid from './Grid.vue'
 
 export default Vue.extend({
-    name: 'Home',
+    name: 'Game',
     components: {
         Header,
         Grid,
