@@ -5,8 +5,7 @@ export interface Tile {
     value: string
     mine: boolean
     touching: number
-    clicked: boolean
-    released: boolean
+    status: 'unclicked' | 'clicked' | 'flagged' | 'uncertain'
 }
 
 export interface TileGroup {

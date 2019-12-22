@@ -27,8 +27,7 @@ const getTiles = (x_length: number, y_length: number, mines: number[]): Tile[] =
                 value: '',
                 mine: mines.indexOf(tile_id) !== -1,
                 touching: 0,
-                clicked: false,
-                released: false,
+                status: 'unclicked',
             })
         }
     }
@@ -67,8 +66,7 @@ const getTouchingValues = (x_length: number, y_length: number, tiles: Tile[]): T
             value: '',
             mine: tile.mine,
             touching: surrounding_tiles.filter(t => !!t && t.mine).length,
-            clicked: false,
-            released: false,
+            status: tile.status,
         }
 
         new_tile.value = new_tile.mine ? '💣' : new_tile.touching ? `${new_tile.touching}` : ''

@@ -1,14 +1,16 @@
 <template>
     <div
+        class="tile"
         v-bind:class="{
-            unclicked: unclicked,
             clicked: clicked,
-            released: released,
+            flagged: flagged,
+            uncertain: uncertain,
         }"
-        @mousedown="click"
-        v-on:click="release"
+        @click.left="leftClick"
+        @click.right="rightClick"
+        oncontextmenu="return false;"
     >
-        {{ tile_info.clicked && tile_info.released ? tile_info.value : '' }}
+        {{ tile_info.status === 'clicked' ? tile_info.value : '' }}
     </div>
 </template>
 
@@ -28,40 +30,33 @@ export default Vue.extend({
         tile_info(): Tile {
             return this.$store.getters.getTileInfo(this.tile_id)
         },
-        unclicked(): boolean {
-            return !this.tile_info.clicked && !this.tile_info.released
-        },
         clicked(): boolean {
-            return this.tile_info.clicked && !this.tile_info.released
+            return this.tile_info.status === 'clicked'
         },
-        released(): boolean {
-            return this.tile_info.clicked && this.tile_info.released
+        flagged(): boolean {
+            return this.tile_info.status === 'flagged'
+        },
+        uncertain(): boolean {
+            return this.tile_info.status === 'uncertain'
         },
     },
     methods: {
-        click() {
-            if (!this.tile_info.clicked) {
-                this.$store.commit('setTileAsClicked', this.tile_id)
-            }
+        leftClick() {
+            this.$store.dispatch('leftClickTile', this.tile_id)
         },
-        release() {
-            if (!this.tile_info.released) {
-                this.$store.commit('setTileAsReleased', this.tile_id)
-                if (this.tile_info.touching === 0) {
-                    this.$store.dispatch('getZeroGroup', this.tile_id)
-                }
-            }
+        rightClick() {
+            this.$store.dispatch('rightClickTile', this.tile_id)
         },
     },
 })
 </script>
 
 <style scoped>
-.unclicked {
+.tile {
     width: 26px;
     height: 26px;
-    background-color: #bdbdbd;
     color: black;
+    background-color: #bdbdbd;
     font-weight: bold;
     border-left: 2px solid #eeeeee;
     border-right: 2px solid #8b8b8b;
@@ -72,29 +67,14 @@ export default Vue.extend({
     float: left;
 }
 .clicked {
-    width: 26px;
-    height: 26px;
-    background-color: #bdbdbd;
-    color: black;
-    font-weight: bold;
-    border: 2px solid #bdbdbd;
-    text-align: center;
-    font-size: 10px;
-    float: left;
-}
-.released {
     width: 29px;
     height: 29px;
-    background-color: #bdbdbd;
-    color: black;
-    font-weight: bold;
     border: 0.5px solid #8c8c8c;
-    text-align: center;
-    font-size: 10px;
-    float: left;
 }
-.tile {
-    display: inline-block;
-    vertical-align: middle;
+.flagged {
+    background-color: red;
+}
+.uncertain {
+    background-color: green;
 }
 </style>
