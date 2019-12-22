@@ -25,6 +25,15 @@ export default new Vuex.Store({
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
                     tile.status = status
+                    if (status === 'unclicked') {
+                        tile.value = ''
+                    } else if (status === 'clicked') {
+                        tile.value = tile.mine ? '☢' : tile.touching ? `${tile.touching}` : ''
+                    } else if (status === 'flagged') {
+                        tile.value = '⚑'
+                    } else if (status === 'uncertain') {
+                        tile.value = '?'
+                    }
                 }
             }
         },

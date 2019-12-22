@@ -69,8 +69,6 @@ const getTouchingValues = (x_length: number, y_length: number, tiles: Tile[]): T
             status: tile.status,
         }
 
-        new_tile.value = new_tile.mine ? '💣' : new_tile.touching ? `${new_tile.touching}` : ''
-
         grid.push(new_tile)
     })
 

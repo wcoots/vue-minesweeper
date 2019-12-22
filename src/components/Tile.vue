@@ -3,14 +3,13 @@
         class="tile"
         v-bind:class="{
             clicked: clicked,
-            flagged: flagged,
-            uncertain: uncertain,
         }"
+        :style="numberColour"
         @click.left="leftClick"
         @click.right="rightClick"
         oncontextmenu="return false;"
     >
-        {{ tile_info.status === 'clicked' ? tile_info.value : '' }}
+        {{ tile_info.value }}
     </div>
 </template>
 
@@ -26,6 +25,11 @@ export default Vue.extend({
             required: true,
         },
     },
+    data() {
+        return {
+            colours: ['#0000ff', '#007b00', '#ff0000', '#00007b', '#7b0000', '#027f80', '#000000', '#7f7f7f'],
+        }
+    },
     computed: {
         tile_info(): Tile {
             return this.$store.getters.getTileInfo(this.tile_id)
@@ -33,11 +37,20 @@ export default Vue.extend({
         clicked(): boolean {
             return this.tile_info.status === 'clicked'
         },
-        flagged(): boolean {
-            return this.tile_info.status === 'flagged'
-        },
-        uncertain(): boolean {
-            return this.tile_info.status === 'uncertain'
+        numberColour(): { color: string } {
+            if (this.tile_info.status === 'flagged') {
+                return { color: 'red' }
+            }
+            if (this.tile_info.status === 'uncertain') {
+                return { color: 'black' }
+            }
+            if (this.tile_info.status === 'clicked') {
+                if (this.tile_info.mine) {
+                    return { color: 'black' }
+                }
+                return { color: this.colours[this.tile_info.touching - 1] }
+            }
+            return { color: 'black' }
         },
     },
     methods: {
@@ -58,23 +71,17 @@ export default Vue.extend({
     color: black;
     background-color: #bdbdbd;
     font-weight: bold;
+    font-size: 20px;
     border-left: 2px solid #eeeeee;
     border-right: 2px solid #8b8b8b;
     border-top: 2px solid #eeeeee;
     border-bottom: 2px solid #8b8b8b;
     text-align: center;
-    font-size: 10px;
     float: left;
 }
 .clicked {
     width: 29px;
     height: 29px;
     border: 0.5px solid #8c8c8c;
-}
-.flagged {
-    background-color: red;
-}
-.uncertain {
-    background-color: green;
 }
 </style>
