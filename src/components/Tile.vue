@@ -54,8 +54,8 @@ export default Vue.extend({
     float: left;
 }
 .clicked {
-    width: 29px;
-    height: 29px;
-    border: 0.5px solid #8c8c8c;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #8c8c8c;
 }
 </style>
