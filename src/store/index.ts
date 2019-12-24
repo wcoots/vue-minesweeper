@@ -14,9 +14,9 @@ export default new Vuex.Store({
         zero_groups: [] as ZeroGroup[],
         click_type: { type: 'normal', value: '☜' } as ClickType,
         game: {
-            x_length: 5,
-            y_length: 5,
-            mines: 2,
+            x_length: 10,
+            y_length: 10,
+            mines: 18,
             status: 'playing',
         } as GameStatus,
     },
@@ -46,16 +46,16 @@ export default new Vuex.Store({
                     tile.status = status
                     if (status === 'unclicked') {
                         tile.value = ''
-                        tile.color = consts.COLORS.black
+                        tile.color = consts.COLORS.BLACK
                     } else if (status === 'clicked') {
                         tile.value = tile.mine ? consts.MINE : tile.touching ? `${tile.touching}` : ''
-                        tile.color = tile.mine ? consts.COLORS.black : consts.NUMBER_COLORS[`${tile.touching}`]
+                        tile.color = tile.mine ? consts.COLORS.BLACK : consts.NUMBER_COLORS[`${tile.touching}`]
                     } else if (status === 'flagged') {
                         tile.value = consts.FLAG
-                        tile.color = consts.COLORS.red
+                        tile.color = consts.COLORS.RED
                     } else if (status === 'uncertain') {
                         tile.value = consts.UNCERTAIN
-                        tile.color = consts.COLORS.black
+                        tile.color = consts.COLORS.BLACK
                     }
                 }
             }
@@ -70,8 +70,8 @@ export default new Vuex.Store({
             state.game.status = 'won'
             for (const tile of state.grid) {
                 if (tile.status === 'flagged') {
-                    tile.color = consts.COLORS.m_black
-                    tile.background_colour = consts.COLORS.b_green
+                    tile.color = consts.COLORS.MINE_BLACK
+                    tile.background_colour = consts.COLORS.GREEN
                 }
             }
         },
@@ -79,13 +79,13 @@ export default new Vuex.Store({
             state.game.status = 'lost'
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
-                    tile.color = consts.COLORS.m_black
-                    tile.background_colour = consts.COLORS.red
+                    tile.color = consts.COLORS.MINE_BLACK
+                    tile.background_colour = consts.COLORS.RED
                 } else if (tile.mine) {
                     tile.value = consts.MINE
-                    tile.color = consts.COLORS.m_black
+                    tile.color = consts.COLORS.MINE_BLACK
                     if (tile.status === 'flagged') {
-                        tile.background_colour = consts.COLORS.b_green
+                        tile.background_colour = consts.COLORS.GREEN
                     }
                     tile.status = 'clicked'
                 }
