@@ -31,7 +31,7 @@ const getTiles = (x_length: number, y_length: number, mines: number[]): Tile[] =
                 mine: mines.indexOf(tile_id) !== -1,
                 touching: 0,
                 status: 'unclicked',
-                color: consts.COLORS.black,
+                color: consts.COLORS.BLACK,
             })
         }
     }

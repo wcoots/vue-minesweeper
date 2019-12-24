@@ -15,7 +15,7 @@ export default Vue.extend({
     },
     methods: {
         click() {
-            this.$store.commit('changeClickType')
+            this.$store.commit('swapClickType')
         },
     },
 })
