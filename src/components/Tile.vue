@@ -32,15 +32,10 @@ export default Vue.extend({
             return this.tile_info.status === 'clicked'
         },
         styles(): { color: string; 'background-color': string } {
-            // return {
-            //     color: this.tile_info.color,
-            //     'background-color': this.tile_info.background_colour ? this.tile_info.background_colour : '#bdbdbd',
-            // }
-            const wasd = {
+            return {
                 color: this.tile_info.color,
                 'background-color': this.tile_info.background_colour ? this.tile_info.background_colour : '#bdbdbd',
             }
-            return wasd
         },
     },
     methods: {
