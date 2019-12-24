@@ -1,4 +1,5 @@
-import { Tile, TileGroup, ZeroGroup } from '../types/types'
+import { Tile, TileGroup, ZeroGroup } from '@/types'
+import consts from '@/constants'
 
 const _ = require('lodash')
 const gen = require('random-seed')
@@ -30,6 +31,7 @@ const getTiles = (x_length: number, y_length: number, mines: number[]): Tile[] =
                 mine: mines.indexOf(tile_id) !== -1,
                 touching: 0,
                 status: 'unclicked',
+                color: consts.COLORS.black,
             })
         }
     }
@@ -69,6 +71,7 @@ const getTouchingValues = (x_length: number, y_length: number, tiles: Tile[]): T
             mine: tile.mine,
             touching: surrounding_tiles.filter(t => !!t && t.mine).length,
             status: tile.status,
+            color: tile.color,
         }
 
         grid.push(new_tile)

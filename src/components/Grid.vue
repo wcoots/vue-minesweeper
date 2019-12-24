@@ -1,6 +1,6 @@
 <template>
     <div class="grid" :style="gridStyles" oncontextmenu="return false;">
-        <div v-for="row in y_length" v-bind:key="row">
+        <div v-for="row in game.y_length" v-bind:key="row">
             <Row :tiles="grid.filter(tile => tile.row === row - 1)" />
         </div>
     </div>
@@ -9,8 +9,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Row from './Row.vue'
-import { createGrid } from '../scripts/scripts'
-import { Tile, ZeroGroup } from '../types/types'
+import { Tile, ZeroGroup, GameStatus } from '@/types'
 
 interface Wasd {
     grid: Tile[]
@@ -19,29 +18,24 @@ interface Wasd {
 
 export default Vue.extend({
     name: 'Grid',
-    data() {
-        return {
-            x_length: 10,
-            y_length: 10,
-            total_mines: 15,
-            grid: [] as Tile[],
-        }
-    },
     components: {
         Row,
     },
     created() {
-        const { grid, zero_groups } = createGrid(this.x_length, this.y_length, this.total_mines)
-        this.grid = grid
-        this.$store.commit('setGrid', grid)
-        this.$store.commit('setZeroGroups', zero_groups)
+        this.$store.commit('setupGame')
     },
     computed: {
         gridStyles(): { width: string; height: string } {
             return {
-                width: `${30 * this.x_length}px`,
-                height: `${30 * this.y_length}px`,
+                width: `${30 * this.game.x_length}px`,
+                height: `${30 * this.game.y_length}px`,
             }
+        },
+        game(): GameStatus {
+            return this.$store.getters.getGameInfo()
+        },
+        grid(): Tile[] {
+            return this.$store.getters.getGrid()
         },
     },
 })
