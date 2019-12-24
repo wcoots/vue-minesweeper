@@ -1,5 +1,5 @@
 <template>
-    <div class="game" oncontextmenu="return false;">
+    <div class="game">
         <Header />
         <Grid />
     </div>

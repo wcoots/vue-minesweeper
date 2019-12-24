@@ -4,7 +4,7 @@
         v-bind:class="{
             clicked: clicked,
         }"
-        :style="numberColour"
+        :style="styles"
         @click.left="leftClick"
         @click.right="rightClick"
     >
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Tile } from '@/types/types'
+import { Tile } from '@/types'
 
 export default Vue.extend({
     name: 'Tile',
@@ -24,11 +24,6 @@ export default Vue.extend({
             required: true,
         },
     },
-    data() {
-        return {
-            colours: ['#0000ff', '#007b00', '#ff0000', '#00007b', '#7b0000', '#027f80', '#000000', '#7f7f7f'],
-        }
-    },
     computed: {
         tile_info(): Tile {
             return this.$store.getters.getTileInfo(this.tile_id)
@@ -36,20 +31,16 @@ export default Vue.extend({
         clicked(): boolean {
             return this.tile_info.status === 'clicked'
         },
-        numberColour(): { color: string } {
-            if (this.tile_info.status === 'flagged') {
-                return { color: 'red' }
+        styles(): { color: string; 'background-color': string } {
+            // return {
+            //     color: this.tile_info.color,
+            //     'background-color': this.tile_info.background_colour ? this.tile_info.background_colour : '#bdbdbd',
+            // }
+            const wasd = {
+                color: this.tile_info.color,
+                'background-color': this.tile_info.background_colour ? this.tile_info.background_colour : '#bdbdbd',
             }
-            if (this.tile_info.status === 'uncertain') {
-                return { color: 'black' }
-            }
-            if (this.tile_info.status === 'clicked') {
-                if (this.tile_info.mine) {
-                    return { color: 'black' }
-                }
-                return { color: this.colours[this.tile_info.touching - 1] }
-            }
-            return { color: 'black' }
+            return wasd
         },
     },
     methods: {

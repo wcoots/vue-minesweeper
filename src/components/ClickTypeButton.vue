@@ -1,20 +1,20 @@
 <template>
-    <div class="tile" @click="changeClickType">{{ click_type }}</div>
+    <div class="tile" @click="click">{{ click_type }}</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { ClickType } from '../types/types'
+import { ClickType } from '@/types'
 
 export default Vue.extend({
-    name: 'ClickType',
+    name: 'ClickTypeButton',
     computed: {
         click_type(): ClickType['value'] {
             return this.$store.getters.getClickTypeValue()
         },
     },
     methods: {
-        changeClickType() {
+        click() {
             this.$store.commit('changeClickType')
         },
     },

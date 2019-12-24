@@ -6,6 +6,8 @@ export interface Tile {
     mine: boolean
     touching: number
     status: 'unclicked' | 'clicked' | 'flagged' | 'uncertain'
+    color: string
+    background_colour?: string
 }
 
 export interface TileGroup {
@@ -20,4 +22,15 @@ export interface ZeroGroup {
 export interface ClickType {
     type: 'normal' | 'flag'
     value: '☜' | '⚑'
+}
+
+export interface GameStatus {
+    x_length: number
+    y_length: number
+    mines: number
+    status: 'playing' | 'lost' | 'won'
+}
+
+export interface Colors {
+    [key: string]: string
 }

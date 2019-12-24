@@ -1,18 +1,21 @@
 <template>
     <div class="header" oncontextmenu="return false;">
         <p class="title">Minesweeper</p>
-        <ClickType />
+        <ClickTypeButton />
+        <ResetButton />
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import ClickType from './ClickType.vue'
+import ClickTypeButton from './ClickTypeButton.vue'
+import ResetButton from './ResetButton.vue'
 
 export default Vue.extend({
     name: 'Header',
     components: {
-        ClickType,
+        ClickTypeButton,
+        ResetButton,
     },
 })
 </script>

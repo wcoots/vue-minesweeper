@@ -6,7 +6,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ClickType from './ClickType.vue'
 
 const pjson = require('../../package.json')
 
@@ -30,7 +29,7 @@ export default Vue.extend({
     background-color: rgb(243, 233, 233);
 }
 a {
-    color: black;
+    color: #000000;
     float: right;
     padding-right: 10px;
 }
