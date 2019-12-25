@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 import { Tile } from '@/types'
 
 export default Vue.extend({
@@ -25,8 +26,13 @@ export default Vue.extend({
         },
     },
     computed: {
+        ...mapGetters(['getGrid', 'getTileInfo']),
         tile_info(): Tile {
-            return this.$store.getters.getTileInfo(this.tile_id)
+            return this.getTileInfo(this.tile_id)
+        },
+        // probably should use getTileStatus here?
+        tile_status(): string {
+            return this.getTileInfo(this.tile_id).status
         },
         clicked(): boolean {
             return this.tile_info.status === 'clicked'
@@ -36,6 +42,11 @@ export default Vue.extend({
                 color: this.tile_info.color,
                 'background-color': this.tile_info.background_colour ? this.tile_info.background_colour : '#bdbdbd',
             }
+        },
+    },
+    watch: {
+        tile_status() {
+            localStorage.setItem('saved_grid', JSON.stringify(this.getGrid()))
         },
     },
     methods: {

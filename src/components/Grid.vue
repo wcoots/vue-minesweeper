@@ -18,11 +18,21 @@ interface Wasd {
 
 export default Vue.extend({
     name: 'Grid',
+    data() {
+        return {
+            saved_grid: localStorage.getItem('saved_grid'),
+            saved_zero_groups: localStorage.getItem('saved_zero_groups'),
+        }
+    },
     components: {
         Row,
     },
     created() {
-        this.$store.commit('setupGame')
+        if (this.saved_grid && this.saved_zero_groups) {
+            this.$store.commit('setupGame', { saved_grid: this.saved_grid, saved_zero_groups: this.saved_zero_groups })
+        } else {
+            this.$store.commit('setupGame')
+        }
     },
     computed: {
         gridStyles(): { width: string; height: string } {

@@ -35,10 +35,16 @@ export default new Vuex.Store({
         },
     },
     mutations: {
-        setupGame(state) {
+        setupGame(state, payload = undefined) {
             const { grid, zero_groups } = createGrid(state.game.x_length, state.game.y_length, state.game.mines)
-            state.grid = grid
-            state.zero_groups = zero_groups
+            if (payload) {
+                state.grid = JSON.parse(payload.saved_grid)
+                state.zero_groups = JSON.parse(payload.saved_zero_groups)
+            } else {
+                state.grid = grid
+                state.zero_groups = zero_groups
+            }
+            localStorage.setItem('saved_zero_groups', JSON.stringify(state.zero_groups))
         },
         setTileStatus(state, { tile_id, status }) {
             for (const tile of state.grid) {
@@ -90,6 +96,7 @@ export default new Vuex.Store({
                     tile.status = 'clicked'
                 }
             }
+            localStorage.clear()
         },
         wipeGrid(state) {
             state.game.status = 'playing'
@@ -97,6 +104,7 @@ export default new Vuex.Store({
                 tile.status = 'unclicked'
                 tile.value = ''
             }
+            localStorage.clear()
         },
     },
     actions: {
