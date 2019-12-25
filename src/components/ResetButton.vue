@@ -1,5 +1,5 @@
 <template>
-    <div class="tile" @click="click">↺</div>
+    <div class="tile_button" @click="click">↺</div>
 </template>
 
 <script lang="ts">
@@ -16,7 +16,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.tile {
+.tile_button {
     position: absolute;
     top: 0;
     bottom: 0;
