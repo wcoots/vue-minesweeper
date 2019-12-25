@@ -24,7 +24,7 @@ export default Vue.extend({
     computed: {
         rowStyles(): { width: string } {
             return {
-                width: `${30 * this.tiles.length}px`,
+                width: `${32 * this.tiles.length}px`,
             }
         },
     },
