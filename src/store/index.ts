@@ -33,10 +33,16 @@ export default new Vuex.Store({
         },
     },
     mutations: {
-        setupGame(state) {
+        setupGame(state, payload = undefined) {
             const { grid, zero_groups } = createGrid(state.game.x_length, state.game.y_length, state.game.mines)
-            state.grid = grid
-            state.zero_groups = zero_groups
+            if (payload) {
+                state.grid = JSON.parse(payload.saved_grid)
+                state.zero_groups = JSON.parse(payload.saved_zero_groups)
+            } else {
+                state.grid = grid
+                state.zero_groups = zero_groups
+            }
+            localStorage.setItem('saved_zero_groups', JSON.stringify(state.zero_groups))
         },
         setTileStatus(state, { tile_id, status }) {
             for (const tile of state.grid) {
@@ -79,6 +85,7 @@ export default new Vuex.Store({
                     tile.status = 'clicked'
                 }
             }
+            localStorage.clear()
         },
         wipeGrid(state) {
             state.game.status = 'playing'
@@ -86,6 +93,7 @@ export default new Vuex.Store({
                 tile.status = 'unclicked'
                 tile.value = ''
             }
+            localStorage.clear()
         },
     },
     actions: {
@@ -96,6 +104,7 @@ export default new Vuex.Store({
                         if (state.click_type.type === 'normal') {
                             if (tile.status === 'flagged' || tile.status === 'uncertain') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
+                                localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                             } else if (tile.status === 'unclicked') {
                                 if (tile.mine) {
                                     commit('setTileStatus', { tile_id: tile.id, status: 'clicked' })
@@ -105,16 +114,20 @@ export default new Vuex.Store({
                                     if (zero_group) {
                                         zero_group.zero_tile_ids.forEach((id: number) => commit('setTileStatus', { tile_id: id, status: 'clicked' }))
                                         zero_group.surrounding_tile_ids.forEach((id: number) => commit('setTileStatus', { tile_id: id, status: 'clicked' }))
+                                        localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                                     }
                                 } else {
                                     commit('setTileStatus', { tile_id: tile.id, status: 'clicked' })
+                                    localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                                 }
                             }
                         } else if (state.click_type.type === 'flag') {
                             if (tile.status === 'flagged') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
+                                localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                             } else if (tile.status !== 'clicked') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'flagged' })
+                                localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                             }
                         }
                     }
