@@ -26,12 +26,13 @@ export default Vue.extend({
         },
     },
     computed: {
-        ...mapGetters(['getGrid']),
+        ...mapGetters(['getGrid', 'getTileInfo']),
         tile_info(): Tile {
-            return this.$store.getters.getTileInfo(this.tile_id)
+            return this.getTileInfo(this.tile_id)
         },
+        // probably should use getTileStatus here?
         tile_status(): string {
-            return this.$store.getters.getTileInfo(this.tile_id).status
+            return this.getTileInfo(this.tile_id).status
         },
         clicked(): boolean {
             return this.tile_info.status === 'clicked'
