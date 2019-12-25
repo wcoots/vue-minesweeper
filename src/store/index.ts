@@ -104,7 +104,6 @@ export default new Vuex.Store({
                         if (state.click_type.type === 'normal') {
                             if (tile.status === 'flagged' || tile.status === 'uncertain') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
-                                localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                             } else if (tile.status === 'unclicked') {
                                 if (tile.mine) {
                                     commit('setTileStatus', { tile_id: tile.id, status: 'clicked' })
@@ -114,20 +113,16 @@ export default new Vuex.Store({
                                     if (zero_group) {
                                         zero_group.zero_tile_ids.forEach((id: number) => commit('setTileStatus', { tile_id: id, status: 'clicked' }))
                                         zero_group.surrounding_tile_ids.forEach((id: number) => commit('setTileStatus', { tile_id: id, status: 'clicked' }))
-                                        localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                                     }
                                 } else {
                                     commit('setTileStatus', { tile_id: tile.id, status: 'clicked' })
-                                    localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                                 }
                             }
                         } else if (state.click_type.type === 'flag') {
                             if (tile.status === 'flagged') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
-                                localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                             } else if (tile.status !== 'clicked') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'flagged' })
-                                localStorage.setItem('saved_grid', JSON.stringify(state.grid))
                             }
                         }
                     }
