@@ -4,6 +4,8 @@ import { Tile, ZeroGroup, ClickType, GameStatus } from '@/types'
 import { createGrid } from '@/scripts'
 import consts from '@/constants'
 
+const _ = require('lodash')
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -14,21 +16,21 @@ export default new Vuex.Store({
         game: {
             x_length: 10,
             y_length: 10,
-            mines: 15,
+            mines: 18,
             status: 'playing',
         } as GameStatus,
     },
     getters: {
-        getTileInfo: state => (tile_id: number) => {
+        getTileInfo: state => (tile_id: number): Tile | undefined => {
             return state.grid.find(tile => tile.id === tile_id)
         },
-        getClickTypeValue: state => () => {
+        getClickTypeValue: state => (): ClickType['value'] => {
             return state.click_type.value
         },
-        getGameInfo: state => () => {
+        getGameInfo: state => (): GameStatus => {
             return state.game
         },
-        getGrid: state => () => {
+        getGrid: state => (): Tile[] => {
             return state.grid
         },
     },
@@ -50,37 +52,46 @@ export default new Vuex.Store({
                     tile.status = status
                     if (status === 'unclicked') {
                         tile.value = ''
-                        tile.color = consts.COLORS.black
+                        tile.color = consts.COLORS.BLACK
                     } else if (status === 'clicked') {
                         tile.value = tile.mine ? consts.MINE : tile.touching ? `${tile.touching}` : ''
-                        tile.color = tile.mine ? consts.COLORS.black : consts.NUMBER_COLORS[`${tile.touching}`]
+                        tile.color = tile.mine ? consts.COLORS.BLACK : consts.NUMBER_COLORS[`${tile.touching}`]
                     } else if (status === 'flagged') {
                         tile.value = consts.FLAG
-                        tile.color = consts.COLORS.red
+                        tile.color = consts.COLORS.RED
                     } else if (status === 'uncertain') {
                         tile.value = consts.UNCERTAIN
-                        tile.color = consts.COLORS.black
+                        tile.color = consts.COLORS.BLACK
                     }
                 }
             }
         },
-        changeClickType(state) {
+        swapClickType(state) {
             state.click_type = state.click_type.type === 'normal' ? { type: 'flag', value: '⚑' } : { type: 'normal', value: '☜' }
         },
-        changeGameStatus(state, status: GameStatus['status']) {
-            state.game.status = status
+        setClickType(state, click_type: ClickType) {
+            state.click_type = click_type
+        },
+        winGame(state) {
+            state.game.status = 'won'
+            for (const tile of state.grid) {
+                if (tile.status === 'flagged') {
+                    tile.color = consts.COLORS.MINE_BLACK
+                    tile.background_colour = consts.COLORS.GREEN
+                }
+            }
         },
         loseGame(state, tile_id: number) {
             state.game.status = 'lost'
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
-                    tile.color = consts.COLORS.m_black
-                    tile.background_colour = consts.COLORS.red
+                    tile.color = consts.COLORS.MINE_BLACK
+                    tile.background_colour = consts.COLORS.RED
                 } else if (tile.mine) {
                     tile.value = consts.MINE
-                    tile.color = consts.COLORS.m_black
+                    tile.color = consts.COLORS.MINE_BLACK
                     if (tile.status === 'flagged') {
-                        tile.background_colour = consts.COLORS.b_green
+                        tile.background_colour = consts.COLORS.GREEN
                     }
                     tile.status = 'clicked'
                 }
@@ -97,7 +108,7 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        leftClickTile({ commit, state }, tile_id: number) {
+        leftClickTile({ state, commit, dispatch }, tile_id: number) {
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
                     if (state.game.status === 'playing') {
@@ -128,8 +139,9 @@ export default new Vuex.Store({
                     }
                 }
             }
+            dispatch('checkGameStatus')
         },
-        rightClickTile({ commit, state }, tile_id: number) {
+        rightClickTile({ state, commit, dispatch }, tile_id: number) {
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
                     if (state.game.status === 'playing') {
@@ -151,10 +163,23 @@ export default new Vuex.Store({
                     }
                 }
             }
+            dispatch('checkGameStatus')
+        },
+        checkGameStatus({ state, commit }) {
+            const all_tiles_flagged_or_clicked = _.every(state.grid, (tile: Tile) => {
+                return tile.status === 'clicked' || tile.status === 'flagged'
+            })
+            if (all_tiles_flagged_or_clicked) {
+                const flagged_tiles = state.grid.filter((tile: Tile) => tile.status === 'flagged' && tile.mine === true)
+                if (flagged_tiles.length === state.game.mines) {
+                    commit('winGame')
+                }
+            }
         },
         resetGrid({ commit }) {
             commit('wipeGrid')
             commit('setupGame')
+            commit('setClickType', { type: 'normal', value: '☜' })
         },
     },
     modules: {},

@@ -38,15 +38,10 @@ export default Vue.extend({
             return this.tile_info.status === 'clicked'
         },
         styles(): { color: string; 'background-color': string } {
-            // return {
-            //     color: this.tile_info.color,
-            //     'background-color': this.tile_info.background_colour ? this.tile_info.background_colour : '#bdbdbd',
-            // }
-            const wasd = {
+            return {
                 color: this.tile_info.color,
                 'background-color': this.tile_info.background_colour ? this.tile_info.background_colour : '#bdbdbd',
             }
-            return wasd
         },
     },
     watch: {
@@ -70,8 +65,8 @@ export default Vue.extend({
     float: left;
 }
 .clicked {
-    width: 29px;
-    height: 29px;
-    border: 0.5px solid #8c8c8c;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #8c8c8c;
 }
 </style>

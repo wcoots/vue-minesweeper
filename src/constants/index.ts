@@ -5,11 +5,10 @@ const FLAG = '⚑'
 const UNCERTAIN = '?'
 
 const COLORS = {
-    red: '#ff0000',
-    black: '#000000',
-    b_grey: '#bdbdbd',
-    b_green: '#a2f47b',
-    m_black: '#000001',
+    RED: '#ff0000',
+    BLACK: '#000000',
+    GREEN: '#a2f47b',
+    MINE_BLACK: '#000001',
 } as Colors
 
 const NUMBER_COLORS = {

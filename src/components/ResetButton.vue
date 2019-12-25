@@ -20,7 +20,7 @@ export default Vue.extend({
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 50%;
+    left: 40%;
     right: 0;
     margin: auto;
 }

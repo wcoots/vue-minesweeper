@@ -37,8 +37,8 @@ export default Vue.extend({
     computed: {
         gridStyles(): { width: string; height: string } {
             return {
-                width: `${30 * this.game.x_length}px`,
-                height: `${30 * this.game.y_length}px`,
+                width: `${32 * this.game.x_length}px`,
+                height: `${32 * this.game.y_length}px`,
             }
         },
         game(): GameStatus {
