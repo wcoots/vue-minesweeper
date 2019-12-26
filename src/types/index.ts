@@ -6,6 +6,7 @@ export interface Tile {
     mine: boolean
     touching: number
     status: 'unclicked' | 'clicked' | 'flagged' | 'uncertain'
+    exploded: boolean
     color: string
     background_colour?: string
 }

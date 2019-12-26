@@ -10,7 +10,13 @@
             <Uncertain />
         </span>
         <span v-else>
-            <span v-if="tile_info.touching === 0">
+            <span v-if="tile_info.exploded">
+                <Explode />
+            </span>
+            <span v-else-if="tile_info.mine">
+                <Mine />
+            </span>
+            <span v-else-if="tile_info.touching === 0">
                 <Clicked />
             </span>
             <span v-else-if="tile_info.touching === 1">
@@ -48,6 +54,8 @@ import Unclicked from './tile_types/Unclicked.vue'
 import Clicked from './tile_types/Clicked.vue'
 import Uncertain from './tile_types/Uncertain.vue'
 import Flagged from './tile_types/Flagged.vue'
+import Mine from './tile_types/Mine.vue'
+import Explode from './tile_types/Explode.vue'
 import One from './tile_types/One.vue'
 import Two from './tile_types/Two.vue'
 import Three from './tile_types/Three.vue'
@@ -70,6 +78,8 @@ export default Vue.extend({
         Clicked,
         Uncertain,
         Flagged,
+        Mine,
+        Explode,
         One,
         Two,
         Three,

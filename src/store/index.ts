@@ -79,6 +79,7 @@ export default new Vuex.Store({
             state.game.status = 'lost'
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
+                    tile.exploded = true
                     tile.color = consts.COLORS.MINE_BLACK
                     tile.background_colour = consts.COLORS.RED
                 } else if (tile.mine) {
