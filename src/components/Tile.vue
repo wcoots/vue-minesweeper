@@ -1,52 +1,40 @@
 <template>
-    <div
-        class="tile"
-        v-bind:class="{
-            clicked: clicked,
-        }"
-        :style="styles"
-        @click.left="leftClick"
-        @click.right="rightClick"
-    >
-        {{ tile_info.value }}
+    <div class="tile" @click.left="leftClick" @click.right="rightClick">
+        <span v-if="tile_info.status !== 'clicked'">
+            <Status :status="tile_info.status" />
+        </span>
+        <span v-else-if="tile_info.mine">
+            <Mine :exploded="tile_info.exploded" />
+        </span>
+        <span v-else>
+            <Numba :number="tile_info.touching" />
+        </span>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
 import { Tile } from '@/types'
+import Status from './tile_types/Status.vue'
+import Mine from './tile_types/Mine.vue'
+import Numba from './tile_types/Numba.vue'
 
 export default Vue.extend({
     name: 'Tile',
     props: {
         tile_id: {
-            type: Number,
+            type: Number as () => Tile['id'],
             required: true,
         },
     },
-    computed: {
-        ...mapGetters(['getGrid', 'getTileInfo']),
-        tile_info(): Tile {
-            return this.getTileInfo(this.tile_id)
-        },
-        // probably should use getTileStatus here?
-        tile_status(): string {
-            return this.getTileInfo(this.tile_id).status
-        },
-        clicked(): boolean {
-            return this.tile_info.status === 'clicked'
-        },
-        styles(): { color: string; 'background-color': string } {
-            return {
-                color: this.tile_info.color,
-                'background-color': this.tile_info.background_colour ? this.tile_info.background_colour : '#bdbdbd',
-            }
-        },
+    components: {
+        Status,
+        Mine,
+        Numba,
     },
-    watch: {
-        tile_status() {
-            localStorage.setItem('saved_grid', JSON.stringify(this.getGrid()))
+    computed: {
+        tile_info(): Tile {
+            return this.$store.getters.getTileInfo(this.tile_id)
         },
     },
     methods: {
@@ -62,11 +50,14 @@ export default Vue.extend({
 
 <style scoped>
 .tile {
+    background-color: #8b8b8b;
+    width: 32px;
+    height: 32px;
     float: left;
-}
-.clicked {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #8c8c8c;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 </style>
