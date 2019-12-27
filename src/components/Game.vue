@@ -9,8 +9,6 @@
 import Vue from 'vue'
 import Header from './Header.vue'
 import Grid from './Grid.vue'
-import Mine from './tile_types/Mine.vue'
-import Explode from './tile_types/Explode.vue'
 
 export default Vue.extend({
     name: 'Game',

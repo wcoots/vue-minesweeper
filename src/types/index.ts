@@ -2,13 +2,10 @@ export interface Tile {
     id: number
     row: number
     column: number
-    value: string
     mine: boolean
     touching: number
     status: 'unclicked' | 'clicked' | 'flagged' | 'uncertain'
     exploded: boolean
-    color: string
-    background_colour?: string
 }
 
 export interface TileGroup {
@@ -21,8 +18,7 @@ export interface ZeroGroup {
 }
 
 export interface ClickType {
-    type: 'normal' | 'flag'
-    value: '☜' | '⚑'
+    type: 'normal' | 'flagging'
 }
 
 export interface GameStatus {
