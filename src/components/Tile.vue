@@ -36,6 +36,14 @@ export default Vue.extend({
         tile_info(): Tile {
             return this.$store.getters.getTileInfo(this.tile_id)
         },
+        tile_status(): Tile['status'] {
+            return this.tile_info.status
+        },
+    },
+    watch: {
+        tile_status() {
+            localStorage.setItem('saved_grid', JSON.stringify(this.$store.getters.getGrid()))
+        },
     },
     methods: {
         leftClick() {
