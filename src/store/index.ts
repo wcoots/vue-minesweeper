@@ -11,7 +11,7 @@ export default new Vuex.Store({
     state: {
         grid: [] as Tile[],
         zero_groups: [] as ZeroGroup[],
-        click_type: { type: 'normal' } as ClickType,
+        click_type: 'normal' as ClickType,
         game: {
             x_length: 10,
             y_length: 10,
@@ -23,8 +23,8 @@ export default new Vuex.Store({
         getTileInfo: state => (tile_id: number): Tile | undefined => {
             return state.grid.find(tile => tile.id === tile_id)
         },
-        getClickTypeValue: state => (): ClickType['type'] => {
-            return state.click_type.type
+        getClickType: state => (): ClickType => {
+            return state.click_type
         },
         getGameInfo: state => (): GameStatus => {
             return state.game
@@ -47,18 +47,13 @@ export default new Vuex.Store({
             }
         },
         swapClickType(state) {
-            state.click_type.type = state.click_type.type === 'normal' ? 'flagging' : 'normal'
+            state.click_type = state.click_type === 'normal' ? 'flagging' : 'normal'
         },
         setClickType(state, click_type) {
-            state.click_type.type = click_type
+            state.click_type = click_type
         },
         winGame(state) {
             state.game.status = 'won'
-            // for (const tile of state.grid) {
-            //     if (tile.status === 'flagged') {
-            //          // GO GREEN
-            //     }
-            // }
         },
         loseGame(state, tile_id: number) {
             state.game.status = 'lost'
@@ -66,9 +61,6 @@ export default new Vuex.Store({
                 if (tile.id === tile_id) {
                     tile.exploded = true
                 } else if (tile.mine) {
-                    // if (tile.status === 'flagged') {
-                    // // GO GREEN
-                    // }
                     tile.status = 'clicked'
                 }
             }
@@ -85,7 +77,7 @@ export default new Vuex.Store({
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
                     if (state.game.status === 'playing') {
-                        if (state.click_type.type === 'normal') {
+                        if (state.click_type === 'normal') {
                             if (tile.status === 'flagged' || tile.status === 'uncertain') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
                             } else if (tile.status === 'unclicked') {
@@ -102,7 +94,7 @@ export default new Vuex.Store({
                                     commit('setTileStatus', { tile_id: tile.id, status: 'clicked' })
                                 }
                             }
-                        } else if (state.click_type.type === 'flagging') {
+                        } else if (state.click_type === 'flagging') {
                             if (tile.status === 'flagged') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
                             } else if (tile.status !== 'clicked') {
@@ -118,7 +110,7 @@ export default new Vuex.Store({
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
                     if (state.game.status === 'playing') {
-                        if (state.click_type.type === 'normal') {
+                        if (state.click_type === 'normal') {
                             if (tile.status === 'unclicked') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'flagged' })
                             } else if (tile.status === 'flagged') {
@@ -126,7 +118,7 @@ export default new Vuex.Store({
                             } else if (tile.status === 'uncertain') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
                             }
-                        } else if (state.click_type.type === 'flagging') {
+                        } else if (state.click_type === 'flagging') {
                             if (tile.status === 'uncertain') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
                             } else if (tile.status !== 'clicked') {

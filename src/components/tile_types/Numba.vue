@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { Tile } from '@/types'
 
 interface SVG_IMAGE {
     number: number
@@ -17,7 +18,7 @@ export default Vue.extend({
     name: 'Numba',
     props: {
         number: {
-            type: Number,
+            type: Number as () => Tile['touching'],
             required: true,
         },
     },

@@ -10,4 +10,7 @@
     border-top: 4px solid #eeeeee;
     border-bottom: 4px solid #8b8b8b;
     text-align: center;
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
 }

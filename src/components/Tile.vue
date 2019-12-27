@@ -23,7 +23,7 @@ export default Vue.extend({
     name: 'Tile',
     props: {
         tile_id: {
-            type: Number,
+            type: Number as () => Tile['id'],
             required: true,
         },
     },

@@ -1,25 +1,26 @@
 <template>
     <div>
         <div v-for="tile in tiles" v-bind:key="tile.id">
-            <Tile :tile_id="tile.id" />
+            <Tyle :tile_id="tile.id" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Tile from './Tile.vue'
+import Tyle from './Tile.vue'
+import { Tile } from '@/types'
 
 export default Vue.extend({
     name: 'Row',
     props: {
         tiles: {
-            type: Array,
+            type: Array as () => Tile[],
             required: true,
         },
     },
     components: {
-        Tile,
+        Tyle,
     },
     computed: {
         rowStyles(): { width: string } {

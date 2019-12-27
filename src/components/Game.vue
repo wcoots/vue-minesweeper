@@ -1,20 +1,32 @@
 <template>
     <div class="game">
-        <Header />
-        <Grid />
+        <GameHeader :game="game" />
+        <Grid :game="game" />
+        <GameFooter :game="game" />
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Header from './Header.vue'
+import GameHeader from './GameHeader.vue'
+import GameFooter from './GameFooter.vue'
 import Grid from './Grid.vue'
+import { GameStatus } from '@/types'
 
 export default Vue.extend({
     name: 'Game',
     components: {
-        Header,
+        GameHeader,
+        GameFooter,
         Grid,
+    },
+    created() {
+        this.$store.commit('setupGame')
+    },
+    computed: {
+        game(): GameStatus {
+            return this.$store.getters.getGameInfo()
+        },
     },
 })
 </script>

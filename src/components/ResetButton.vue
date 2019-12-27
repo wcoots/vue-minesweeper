@@ -23,14 +23,3 @@ export default Vue.extend({
     },
 })
 </script>
-
-<style scoped>
-.tile_button {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 40%;
-    right: 0;
-    margin: auto;
-}
-</style>

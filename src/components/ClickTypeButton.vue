@@ -18,8 +18,8 @@ import { ClickType } from '@/types'
 export default Vue.extend({
     name: 'ClickTypeButton',
     computed: {
-        click_type(): ClickType['type'] {
-            return this.$store.getters.getClickTypeValue()
+        click_type(): ClickType {
+            return this.$store.getters.getClickType()
         },
     },
     methods: {
@@ -29,14 +29,3 @@ export default Vue.extend({
     },
 })
 </script>
-
-<style scoped>
-.tile_button {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 80%;
-    right: 0;
-    margin: auto;
-}
-</style>

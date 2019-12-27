@@ -17,7 +17,7 @@ export default Vue.extend({
     name: 'Status',
     props: {
         status: {
-            type: String,
+            type: String as () => Tile['status'],
             required: true,
         },
     },

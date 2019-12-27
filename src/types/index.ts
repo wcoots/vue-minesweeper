@@ -17,17 +17,11 @@ export interface ZeroGroup {
     surrounding_tile_ids: number[]
 }
 
-export interface ClickType {
-    type: 'normal' | 'flagging'
-}
+export type ClickType = 'normal' | 'flagging'
 
 export interface GameStatus {
     x_length: number
     y_length: number
     mines: number
     status: 'playing' | 'lost' | 'won'
-}
-
-export interface Colors {
-    [key: string]: string
 }
