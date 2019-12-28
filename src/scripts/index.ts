@@ -266,7 +266,6 @@ export const createGridFromGameMode = (
     grid: Tile[]
     zero_groups: ZeroGroup[]
 } => {
-    console.log(game_mode_name)
     const { x_length, y_length, total_mines, mines, seed } = getMinesFromGameMode(game_mode_name)
     const tiles: Tile[] = getTiles(x_length, y_length, mines)
     const grid: Tile[] = getTouchingValues(x_length, y_length, tiles)
