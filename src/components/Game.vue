@@ -11,7 +11,7 @@ import Vue from 'vue'
 import GameHeader from './GameHeader.vue'
 import GameFooter from './GameFooter.vue'
 import Grid from './Grid.vue'
-import { GameStatus } from '@/types'
+import { GameStatus, GameMode } from '@/types'
 
 export default Vue.extend({
     name: 'Game',
@@ -21,7 +21,7 @@ export default Vue.extend({
         Grid,
     },
     created() {
-        this.$store.commit('setupGame')
+        this.$store.commit('setupGame', { mode: 'preset', preset_name: 'beginner' } as GameMode)
     },
     computed: {
         game(): GameStatus {

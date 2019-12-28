@@ -1,14 +1,13 @@
 <template>
     <div class="footer" :style="footerStyles" oncontextmenu="return false;">
         <p class="status">{{ gameStatus }}</p>
+        <p class="seed">seed: {{ gameSeed }}</p>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { GameStatus } from '@/types'
-
-// TODO: create timer and flagged mine count and put them in here
 
 export default Vue.extend({
     name: 'GameFooter',
@@ -40,6 +39,9 @@ export default Vue.extend({
         gameStatus(): GameStatus['status'] {
             return this.game.status
         },
+        gameSeed(): GameStatus['seed'] {
+            return `${this.game.x_length}-${this.game.y_length}-${this.game.mines}-${this.game.seed}`
+        },
     },
 })
 </script>
@@ -56,5 +58,9 @@ export default Vue.extend({
 .status {
     float: left;
     padding-left: 20px;
+}
+.seed {
+    float: right;
+    padding-right: 20px;
 }
 </style>

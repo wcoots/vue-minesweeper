@@ -1,18 +1,114 @@
-import { Tile, TileGroup, ZeroGroup } from '@/types'
+import { Tile, TileGroup, ZeroGroup, PresetGame } from '@/types'
 
 const _ = require('lodash')
 const gen = require('random-seed')
 
-const getMines = (x_length: number, y_length: number, total_mines: number, seed?: string): number[] => {
-    const rand = seed ? gen.create(seed) : gen.create()
+const GAME_MODES: PresetGame[] = [
+    {
+        name: 'beginner',
+        x_length: 9,
+        y_length: 9,
+        total_mines: 10,
+    },
+    {
+        name: 'intermediate',
+        x_length: 16,
+        y_length: 16,
+        total_mines: 40,
+    },
+    {
+        name: 'expert',
+        x_length: 30,
+        y_length: 16,
+        total_mines: 99,
+    },
+]
+
+const validateSeed = (seed: string): { x_length: number; y_length: number; total_mines: number; seed: string } | undefined => {
+    const is_valid_seed: boolean = /^([0-9]+)-([0-9]+)-([0-9]+)-([0-9A-Za-z]+)$/.test(seed)
+
+    if (is_valid_seed) {
+        const splitted: string[] = seed.split('-')
+        const x_length: number = +splitted[0] <= 30 ? +splitted[0] : 30
+        const y_length: number = +splitted[1] <= 30 ? +splitted[1] : 30
+        const max_mines: number = Math.floor((x_length * y_length) / 3)
+        const total_mines: number = +splitted[2] <= max_mines ? +splitted[2] : max_mines
+
+        return {
+            x_length,
+            y_length,
+            total_mines,
+            seed: splitted[3],
+        }
+    }
+    return undefined
+}
+
+const getMinesFromDimensions = (
+    input_x_length: number,
+    input_y_length: number,
+    input_total_mines: number,
+): { x_length: number; y_length: number; total_mines: number; mines: number[]; seed: string } => {
+    const seed: string = Math.random()
+        .toString(36)
+        .substr(2, 10)
+    const rand = gen.create(seed)
+
     const mines: number[] = []
+    const x_length = input_x_length <= 30 ? input_x_length : 30
+    const y_length = input_y_length <= 30 ? input_y_length : 30
+    const total_tiles: number = x_length * y_length
+    const max_mines: number = Math.floor(total_tiles / 3)
+    const total_mines = input_total_mines <= max_mines ? input_total_mines : max_mines
 
     while (mines.length < total_mines) {
-        const x = rand.range(x_length * y_length) + 1
+        const x = rand.intBetween(0, total_tiles)
         if (mines.indexOf(x) === -1) mines.push(x)
     }
 
-    return mines
+    rand.done()
+
+    return { x_length, y_length, total_mines, mines, seed }
+}
+
+const getMinesFromSeed = (input_seed: string): { x_length: number; y_length: number; total_mines: number; mines: number[]; seed: string } | undefined => {
+    const validated_seed = validateSeed(input_seed)
+    if (!validated_seed) return undefined
+    const { x_length, y_length, total_mines, seed } = validated_seed
+
+    const rand = gen.create(seed)
+
+    const mines: number[] = []
+    const total_tiles: number = x_length * y_length
+
+    while (mines.length < total_mines) {
+        const x = rand.intBetween(1, total_tiles)
+        if (mines.indexOf(x) === -1) mines.push(x)
+    }
+
+    rand.done()
+
+    return { x_length, y_length, total_mines, mines, seed }
+}
+
+const getMinesFromGameMode = (game_mode_name: PresetGame['name']): { x_length: number; y_length: number; total_mines: number; mines: number[]; seed: string } => {
+    const seed = Math.random()
+        .toString(36)
+        .substr(2, 10)
+    const rand = gen.create(seed)
+
+    const mines: number[] = []
+    const { x_length, y_length, total_mines } = GAME_MODES.find((mode: PresetGame) => mode.name === game_mode_name) || GAME_MODES[0]
+    const total_tiles: number = x_length * y_length
+
+    while (mines.length < total_mines) {
+        const x = rand.intBetween(1, total_tiles)
+        if (mines.indexOf(x) === -1) mines.push(x)
+    }
+
+    rand.done()
+
+    return { x_length, y_length, total_mines, mines, seed }
 }
 
 const getTiles = (x_length: number, y_length: number, mines: number[]): Tile[] => {
@@ -122,24 +218,59 @@ const getZeroGroups = (x_length: number, y_length: number, grid: Tile[]): ZeroGr
     return zero_groups
 }
 
-export const createGrid = (
-    x_length: number,
-    y_length: number,
-    total_mines: number,
+export const createGridFromDimensions = (
+    input_x_length: number,
+    input_y_length: number,
+    input_total_mines: number,
 ): {
+    x_length: number
+    y_length: number
+    total_mines: number
+    seed: string
     grid: Tile[]
     zero_groups: ZeroGroup[]
 } => {
-    // TODO: set x_length and y_length as globals so they don't have to be passed into every function
-
-    const mines: number[] = getMines(x_length, y_length, total_mines)
+    const { x_length, y_length, total_mines, mines, seed } = getMinesFromDimensions(input_x_length, input_y_length, input_total_mines)
     const tiles: Tile[] = getTiles(x_length, y_length, mines)
     const grid: Tile[] = getTouchingValues(x_length, y_length, tiles)
     const zero_groups: ZeroGroup[] = getZeroGroups(x_length, y_length, grid)
 
-    return { grid, zero_groups }
+    return { x_length, y_length, total_mines, seed, grid, zero_groups }
 }
 
-export const fakeFunction = (input: number) => {
-    return input + 1
+export const createGridFromSeed = (
+    input_seed: string,
+): {
+    x_length: number
+    y_length: number
+    total_mines: number
+    seed: string
+    grid: Tile[]
+    zero_groups: ZeroGroup[]
+} => {
+    const { x_length, y_length, total_mines, mines, seed } = getMinesFromSeed(input_seed) || getMinesFromGameMode('beginner')
+    const tiles: Tile[] = getTiles(x_length, y_length, mines)
+    const grid: Tile[] = getTouchingValues(x_length, y_length, tiles)
+    const zero_groups: ZeroGroup[] = getZeroGroups(x_length, y_length, grid)
+
+    return { x_length, y_length, total_mines, seed, grid, zero_groups }
+}
+
+export const createGridFromGameMode = (
+    game_mode_name: PresetGame['name'],
+): {
+    x_length: number
+    y_length: number
+    total_mines: number
+    seed: string
+    grid: Tile[]
+    zero_groups: ZeroGroup[]
+} => {
+    console.log(game_mode_name)
+    const { x_length, y_length, total_mines, mines, seed } = getMinesFromGameMode(game_mode_name)
+    const tiles: Tile[] = getTiles(x_length, y_length, mines)
+    const grid: Tile[] = getTouchingValues(x_length, y_length, tiles)
+    const zero_groups: ZeroGroup[] = getZeroGroups(x_length, y_length, grid)
+
+    return { x_length, y_length, total_mines, seed, grid, zero_groups }
 }

@@ -23,5 +23,24 @@ export interface GameStatus {
     x_length: number
     y_length: number
     mines: number
+    seed: string
     status: 'playing' | 'lost' | 'won'
+}
+
+type PresetGameName = 'beginner' | 'intermediate' | 'expert'
+
+export interface PresetGame {
+    name: PresetGameName
+    x_length: number
+    y_length: number
+    total_mines: number
+}
+
+export interface GameMode {
+    mode: 'specified' | 'preset' | 'seed'
+    x_length?: number
+    y_length?: number
+    total_mines?: number
+    preset_name?: PresetGameName
+    seed?: string
 }
