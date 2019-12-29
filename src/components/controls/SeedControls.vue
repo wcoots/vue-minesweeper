@@ -53,7 +53,7 @@ export default Vue.extend({
 
 <style scoped>
 .controls {
-    height: 30px;
+    height: auto;
     width: 100%;
     float: left;
     display: block;
@@ -64,9 +64,10 @@ export default Vue.extend({
     border-bottom: solid #8c8c8c 2px;
     margin-bottom: 50px;
     padding-top: 10px;
+    padding-bottom: 10px;
 }
 input {
-    width: 70%;
+    width: 60%;
     height: 20px;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     color: #465563;
@@ -84,7 +85,6 @@ input {
     text-align: middle;
     float: right;
     margin-right: 10px;
-    /* background-color: #e2dfdf; */
     border: none;
 }
 </style>
