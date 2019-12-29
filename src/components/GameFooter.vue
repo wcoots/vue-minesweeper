@@ -1,7 +1,7 @@
 <template>
     <div class="footer" :style="footerStyles" oncontextmenu="return false;">
-        <p class="status">{{ gameStatus }}</p>
-        <p class="seed">seed: {{ gameSeed }}</p>
+        <p class="status">{{ gameStatus.status }}</p>
+        <p class="seed">seed: {{ gameStatus.seed }}</p>
     </div>
 </template>
 
@@ -36,11 +36,8 @@ export default Vue.extend({
             }
             return styles
         },
-        gameStatus(): GameStatus['status'] {
-            return this.game.status
-        },
-        gameSeed(): GameStatus['seed'] {
-            return `${this.game.x_length}-${this.game.y_length}-${this.game.mines}-${this.game.seed}`
+        gameStatus(): GameStatus {
+            return this.game
         },
     },
 })

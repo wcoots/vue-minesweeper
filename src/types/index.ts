@@ -34,6 +34,7 @@ export interface PresetGame {
     x_length: number
     y_length: number
     total_mines: number
+    total_tiles: number
 }
 
 export interface GameMode {
