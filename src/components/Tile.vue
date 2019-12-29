@@ -15,9 +15,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Tile } from '@/types'
-import Status from './tile_types/Status.vue'
-import Mine from './tile_types/Mine.vue'
-import Numba from './tile_types/Numba.vue'
+import tileTypes from '@/components/tiles'
+
+const { Mine, Numba, Status } = tileTypes
 
 export default Vue.extend({
     name: 'Tile',

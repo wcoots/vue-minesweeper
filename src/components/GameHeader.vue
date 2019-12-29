@@ -1,5 +1,5 @@
 <template>
-    <div class="header" :style="headerStyles" oncontextmenu="return false;">
+    <div class="header" oncontextmenu="return false;">
         <p class="title">Minesweeper</p>
         <ClickTypeButton />
         <ResetButton />
@@ -8,9 +8,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ClickTypeButton from './ClickTypeButton.vue'
-import ResetButton from './ResetButton.vue'
 import { GameStatus } from '@/types'
+import buttonTypes from '@/components/buttons'
+
+const { ClickTypeButton, ResetButton } = buttonTypes
 
 export default Vue.extend({
     name: 'GameHeader',
@@ -24,13 +25,6 @@ export default Vue.extend({
             required: true,
         },
     },
-    computed: {
-        headerStyles(): { width: string } {
-            return {
-                width: `${this.game.x_length * 32}px`,
-            }
-        },
-    },
 })
 </script>
 
@@ -41,8 +35,8 @@ export default Vue.extend({
     display: block;
     position: relative;
     background-color: #b9b9b9;
-    margin-bottom: 10px;
     border: solid #8c8c8c 2px;
+    margin-bottom: 10px;
 }
 .title {
     float: left;

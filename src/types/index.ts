@@ -38,7 +38,7 @@ export interface PresetGame {
 }
 
 export interface GameMode {
-    mode: 'specified' | 'preset' | 'seed'
+    mode: 'preset' | 'specified' | 'seed'
     x_length?: number
     y_length?: number
     total_mines?: number

@@ -1,6 +1,5 @@
 <template>
     <div class="footer" :style="footerStyles" oncontextmenu="return false;">
-        <p class="status">{{ gameStatus.status }}</p>
         <p class="seed">seed: {{ gameStatus.seed }}</p>
     </div>
 </template>
@@ -18,9 +17,8 @@ export default Vue.extend({
         },
     },
     computed: {
-        footerStyles(): { width: string; 'border-color': string; 'background-color': string } {
+        footerStyles(): { 'border-color': string; 'background-color': string } {
             const styles = {
-                width: `${this.game.x_length * 32}px`,
                 'border-color': '',
                 'background-color': '',
             }
@@ -49,15 +47,12 @@ export default Vue.extend({
     float: left;
     display: block;
     position: relative;
-    margin-top: 10px;
     border: solid 2px;
-}
-.status {
-    float: left;
-    padding-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .seed {
-    float: right;
-    padding-right: 20px;
+    float: left;
+    padding-left: 20px;
 }
 </style>
