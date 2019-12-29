@@ -7,7 +7,7 @@
         </div>
         <PresetControls v-if="currentTab === 'preset'" />
         <SpecifiedControls v-if="currentTab === 'specified'" />
-        <SeedControls v-if="currentTab === 'seed'" />
+        <SeedControls :current_seed="game.seed" v-if="currentTab === 'seed'" />
     </div>
 </template>
 

@@ -43,7 +43,7 @@ export default Vue.extend({
 
 <style scoped>
 .footer {
-    height: 50px;
+    height: auto;
     float: left;
     display: block;
     position: relative;

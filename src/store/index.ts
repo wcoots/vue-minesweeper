@@ -44,6 +44,7 @@ export default new Vuex.Store({
             state.game.seed = seed
             state.grid = grid
             state.zero_groups = zero_groups
+            state.game.status = 'playing'
         },
         setTileStatus(state, { tile_id, status }) {
             for (const tile of state.grid) {

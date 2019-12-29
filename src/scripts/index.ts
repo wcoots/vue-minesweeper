@@ -30,7 +30,7 @@ const MAX_X: number = 30
 const MAX_Y: number = 30
 const MAX_M: number = 3
 
-const validateSeed = (seed: string): { x_length: number; y_length: number; total_mines: number; valid_seed: string } | undefined => {
+export const validateSeed = (seed: string): { x_length: number; y_length: number; total_mines: number; valid_seed: string } | undefined => {
     const is_valid_seed: boolean = /^([0-9]+)-([0-9]+)-([0-9]+)-([0-9A-Za-z]+)$/.test(seed)
 
     if (is_valid_seed) {
@@ -241,8 +241,4 @@ export const createGrid = (
     const zero_groups: ZeroGroup[] = getZeroGroups(x_length, y_length, grid)
 
     return { x_length, y_length, total_mines, seed, grid, zero_groups }
-}
-
-export const fakeFunction = () => {
-    return null
 }
