@@ -2,8 +2,10 @@
     <div class="controls" oncontextmenu="return false;">
         <label for="x_length" class="text">x:</label>
         <input id="x_length" v-model="x_length" class="text" type="text" spellcheck="false" />
+
         <label for="y_length" class="text">y:</label>
         <input id="y_length" v-model="y_length" class="text" type="text" spellcheck="false" />
+
         <label for="mines" class="text">m:</label>
         <input id="mines" v-model="total_mines" class="text" type="text" spellcheck="false" />
         <div class="submit" @click="submitSpecs" :style="submitStyles">
@@ -64,7 +66,7 @@ export default Vue.extend({
     methods: {
         submitSpecs() {
             if (this.areSpecsValid) {
-                this.$store.commit('setupGame', { mode: 'specified', x_length: this.x_length, y_length: this.y_length, total_mines: this.total_mines } as GameMode)
+                this.$store.commit('setupGame', { mode: 'specified', x_length: +this.x_length, y_length: +this.y_length, total_mines: +this.total_mines } as GameMode)
             }
         },
     },
