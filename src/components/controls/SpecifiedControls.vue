@@ -50,10 +50,10 @@ export default Vue.extend({
     },
     computed: {
         areSpecsValid(): boolean {
-            const valid_x_length: boolean = this.x_length > 0 && this.x_length <= 30
-            const valid_y_length: boolean = this.y_length > 0 && this.y_length <= 30
-            const max_mines: number = calculateMaximumMineCount(this.x_length, this.y_length)
-            const valid_total_mines: boolean = this.total_mines > 0 && this.total_mines <= max_mines
+            const valid_x_length: boolean = +this.x_length > 0 && +this.x_length <= 30
+            const valid_y_length: boolean = +this.y_length > 0 && +this.y_length <= 30
+            const max_mines: number = calculateMaximumMineCount(+this.x_length, +this.y_length)
+            const valid_total_mines: boolean = +this.total_mines > 0 && +this.total_mines <= max_mines
             return valid_x_length && valid_y_length && valid_total_mines
         },
         submitStyles(): { 'background-color': string } {
@@ -115,5 +115,6 @@ input {
     float: right;
     margin-right: 10px;
     border: none;
+    cursor: pointer;
 }
 </style>

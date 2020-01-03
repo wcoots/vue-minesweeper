@@ -85,5 +85,6 @@ input {
     float: right;
     margin-right: 10px;
     border: none;
+    cursor: pointer;
 }
 </style>

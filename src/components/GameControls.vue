@@ -63,6 +63,7 @@ export default Vue.extend({
     height: 20px;
     float: left;
     background-color: #b9b9b9;
+    cursor: pointer;
 }
 .tab-left {
     border-right: solid #8c8c8c 2px;

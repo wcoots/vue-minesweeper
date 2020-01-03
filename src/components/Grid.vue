@@ -41,5 +41,6 @@ export default Vue.extend({
     border: 2px solid #8c8c8c;
     display: block;
     clear: both;
+    cursor: pointer;
 }
 </style>

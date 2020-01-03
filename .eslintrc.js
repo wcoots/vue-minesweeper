@@ -7,7 +7,7 @@ module.exports = {
     plugins: ['prettier'],
     rules: {
         'prettier/prettier': 'error',
-        'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+        'no-console': 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         camelcase: 'off',
         'prefer-default-export': 'off',
@@ -15,6 +15,7 @@ module.exports = {
         'no-nested-ternary': 'off',
         'no-lonely-if': 'off',
         'no-restricted-globals': 'off',
+        'no-useless-concat': 'off',
     },
     parserOptions: {
         parser: '@typescript-eslint/parser',
