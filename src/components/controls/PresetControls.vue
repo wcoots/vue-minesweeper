@@ -62,5 +62,6 @@ export default Vue.extend({
     padding: 5px;
     border: none;
     background-color: #e2dfdf;
+    cursor: pointer;
 }
 </style>

@@ -54,5 +54,10 @@ export default Vue.extend({
 .seed {
     float: left;
     padding-left: 20px;
+    user-select: text;
+    -moz-user-select: text;
+    -khtml-user-select: text;
+    -webkit-user-select: text;
+    -o-user-select: text;
 }
 </style>

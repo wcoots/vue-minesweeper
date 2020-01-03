@@ -1,13 +1,13 @@
 {
     "name": "vue-minesweeper",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
-        "testscript": "node src/test",
-        "testrun": "yarn testscript"
+        "testrun": "yarn testscript",
+        "testscript": "node src/test"
     },
     "dependencies": {
         "core-js": "^3.4.3",
@@ -15,6 +15,7 @@
         "eslint-plugin-prettier": "^3.1.1",
         "lodash": "^4.17.15",
         "random-seed": "^0.3.0",
+        "register-service-worker": "^1.6.2",
         "vue": "^2.6.10",
         "vue-class-component": "^7.0.2",
         "vue-property-decorator": "^8.3.0",
@@ -24,6 +25,7 @@
     "devDependencies": {
         "@vue/cli-plugin-babel": "^4.1.0",
         "@vue/cli-plugin-eslint": "^4.1.0",
+        "@vue/cli-plugin-pwa": "^4.1.2",
         "@vue/cli-plugin-typescript": "^4.1.0",
         "@vue/cli-service": "^4.1.0",
         "@vue/eslint-config-airbnb": "^4.0.0",
