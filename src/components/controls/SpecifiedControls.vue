@@ -67,6 +67,7 @@ export default Vue.extend({
         submitSpecs() {
             if (this.areSpecsValid) {
                 this.$store.commit('setupGame', { mode: 'specified', x_length: +this.x_length, y_length: +this.y_length, total_mines: +this.total_mines } as GameMode)
+                this.$store.commit('startGame')
             }
         },
     },

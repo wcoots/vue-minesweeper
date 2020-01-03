@@ -16,6 +16,7 @@ module.exports = {
         'no-lonely-if': 'off',
         'no-restricted-globals': 'off',
         'no-useless-concat': 'off',
+        'object-shorthand': 'off',
     },
     parserOptions: {
         parser: '@typescript-eslint/parser',

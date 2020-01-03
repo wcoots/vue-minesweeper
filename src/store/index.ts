@@ -44,7 +44,7 @@ export default new Vuex.Store({
             state.game.seed = seed
             state.grid = grid
             state.zero_groups = zero_groups
-            state.game.status = 'playing'
+            state.game.status = 'lost'
         },
         setTileStatus(state, { tile_id, status }) {
             for (const tile of state.grid) {
@@ -58,6 +58,9 @@ export default new Vuex.Store({
         },
         setClickType(state, click_type) {
             state.click_type = click_type
+        },
+        startGame(state) {
+            state.game.status = 'playing'
         },
         winGame(state) {
             state.game.status = 'won'
@@ -137,6 +140,13 @@ export default new Vuex.Store({
             }
             dispatch('checkGameStatus')
         },
+        // setupGame({ state, commit }, game_mode: GameMode) {
+        //     console.log(state.game.status)
+        //     commit('setupGrid', game_mode)
+        //     console.log(state.game.status)
+        //     commit('startGame')
+        //     console.log(state.game.status)
+        // },
         checkGameStatus({ state, commit }) {
             const all_tiles_flagged_or_clicked = _.every(state.grid, (tile: Tile) => {
                 return tile.status === 'clicked' || tile.status === 'flagged'
@@ -148,7 +158,7 @@ export default new Vuex.Store({
                 }
             }
         },
-        resetGrid({ state, commit }) {
+        resetGrid({ state, commit, dispatch }) {
             commit('wipeGrid')
             commit('setupGame', { mode: 'specified', x_length: state.game.x_length, y_length: state.game.y_length, total_mines: state.game.mines })
             commit('setClickType', 'normal')

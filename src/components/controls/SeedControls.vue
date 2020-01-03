@@ -44,6 +44,7 @@ export default Vue.extend({
         submitSeed() {
             if (this.isSeedValid) {
                 this.$store.commit('setupGame', { mode: 'seed', seed: this.new_seed } as GameMode)
+                this.$store.commit('startGame')
             }
         },
     },

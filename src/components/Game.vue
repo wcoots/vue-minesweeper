@@ -27,9 +27,8 @@ export default Vue.extend({
         GameControls,
     },
     created() {
-        // this.$store.commit('setupGame', { mode: 'specified', x_length: 3, y_length: 3, total_mines: 5 } as GameMode)
-        // this.$store.commit('setupGame', { mode: 'seed', seed: '10-10-10-mmmmmmmm' } as GameMode)
         this.$store.commit('setupGame', { mode: 'preset', preset_name: 'beginner' } as GameMode)
+        this.$store.commit('startGame')
     },
     computed: {
         game(): GameStatus {

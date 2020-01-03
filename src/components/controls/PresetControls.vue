@@ -30,6 +30,7 @@ export default Vue.extend({
     methods: {
         selectGameMode(preset_name: GameMode['preset_name']) {
             this.$store.commit('setupGame', { mode: 'preset', preset_name } as GameMode)
+            this.$store.commit('startGame')
         },
     },
 })
