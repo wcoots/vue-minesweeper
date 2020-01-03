@@ -1,6 +1,7 @@
 <template>
     <div class="game" :style="gameStyles">
         <GameHeader :game="game" :style="gameStyles" />
+        <GameStats :game="game" :style="gameStyles" />
         <Grid :game="game" />
         <GameFooter :game="game" :style="gameStyles" />
         <GameControls :game="game" :style="gameStyles" />
@@ -10,6 +11,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import GameHeader from './GameHeader.vue'
+import GameStats from './GameStats.vue'
 import Grid from './Grid.vue'
 import GameFooter from './GameFooter.vue'
 import GameControls from './GameControls.vue'
@@ -19,6 +21,7 @@ export default Vue.extend({
     name: 'Game',
     components: {
         GameHeader,
+        GameStats,
         Grid,
         GameFooter,
         GameControls,

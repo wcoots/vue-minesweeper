@@ -1,6 +1,9 @@
 <template>
     <div class="footer" :style="footerStyles" oncontextmenu="return false;">
-        <p class="seed">seed: {{ gameStatus.seed }}</p>
+        <p class="seed">
+            seed:
+            <span class="seed_value">{{ gameStatus.seed }}</span>
+        </p>
     </div>
 </template>
 
@@ -54,6 +57,8 @@ export default Vue.extend({
 .seed {
     float: left;
     padding-left: 20px;
+}
+.seed_value {
     user-select: text;
     -moz-user-select: text;
     -khtml-user-select: text;
