@@ -6,7 +6,7 @@
             <div class="tab tab-right" :style="tabStyles" @click="clickTab('seed')">seed</div>
         </div>
         <PresetControls v-if="currentTab === 'preset'" />
-        <SpecifiedControls v-if="currentTab === 'specified'" />
+        <SpecifiedControls :current_x_length="+game.x_length" :current_y_length="+game.y_length" :current_total_mines="+game.mines" v-if="currentTab === 'specified'" />
         <SeedControls :current_seed="game.seed" v-if="currentTab === 'seed'" />
     </div>
 </template>

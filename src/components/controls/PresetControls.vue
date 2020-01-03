@@ -1,6 +1,6 @@
 <template>
     <div class="controls" oncontextmenu="return false;">
-        <div v-for="preset in presets" v-bind:key="preset">
+        <div v-for="preset in presets" v-bind:key="preset.name">
             <div class="game_mode" @click="selectGameMode(preset.name)">
                 <b>{{ preset.name }}</b>
                 <hr />

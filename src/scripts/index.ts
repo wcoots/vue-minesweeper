@@ -30,6 +30,10 @@ const MAX_X: number = 30
 const MAX_Y: number = 30
 const MAX_M: number = 3
 
+export const calculateMaximumMineCount = (x_length: number, y_length: number): number => {
+    return Math.floor((x_length * y_length) / MAX_M)
+}
+
 export const validateSeed = (seed: string): { x_length: number; y_length: number; total_mines: number; valid_seed: string } | undefined => {
     const is_valid_seed: boolean = /^([0-9]+)-([0-9]+)-([0-9]+)-([0-9A-Za-z]+)$/.test(seed)
 
@@ -37,7 +41,7 @@ export const validateSeed = (seed: string): { x_length: number; y_length: number
         const splitted: string[] = seed.split('-')
         const x_length: number = +splitted[0] <= MAX_X ? +splitted[0] : MAX_X
         const y_length: number = +splitted[1] <= MAX_Y ? +splitted[1] : MAX_Y
-        const max_mines: number = Math.floor((x_length * y_length) / MAX_M)
+        const max_mines: number = calculateMaximumMineCount(x_length, y_length)
         const total_mines: number = +splitted[2] <= max_mines ? +splitted[2] : max_mines
 
         return {
@@ -82,7 +86,7 @@ const getMinesFromDimensions = (
     const x_length = input_x_length <= MAX_X ? input_x_length : MAX_X
     const y_length = input_y_length <= MAX_Y ? input_y_length : MAX_Y
     const total_tiles: number = x_length * y_length
-    const max_mines: number = Math.floor(total_tiles / MAX_M)
+    const max_mines: number = calculateMaximumMineCount(x_length, y_length)
     const total_mines = input_total_mines <= max_mines ? input_total_mines : max_mines
     const mines: number[] = createMines(random_seed, total_mines, total_tiles)
     const seed = returnSeed(x_length, y_length, total_mines, random_seed)
