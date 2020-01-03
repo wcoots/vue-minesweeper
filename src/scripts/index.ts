@@ -1,18 +1,117 @@
-import { Tile, TileGroup, ZeroGroup } from '@/types'
+import { Tile, TileGroup, ZeroGroup, GameMode, PresetGame } from '@/types'
 
 const _ = require('lodash')
 const gen = require('random-seed')
 
-const getMines = (x_length: number, y_length: number, total_mines: number, seed?: string): number[] => {
-    const rand = seed ? gen.create(seed) : gen.create()
+export const preset_games: PresetGame[] = [
+    {
+        name: 'beginner',
+        x_length: 9,
+        y_length: 9,
+        total_mines: 10,
+        total_tiles: 81,
+    },
+    {
+        name: 'intermediate',
+        x_length: 16,
+        y_length: 16,
+        total_mines: 40,
+        total_tiles: 256,
+    },
+    {
+        name: 'expert',
+        x_length: 30,
+        y_length: 16,
+        total_mines: 99,
+        total_tiles: 480,
+    },
+]
+const MAX_X: number = 30
+const MAX_Y: number = 30
+const MAX_M: number = 3
+
+export const calculateMaximumMineCount = (x_length: number, y_length: number): number => {
+    return Math.floor((x_length * y_length) / MAX_M)
+}
+
+export const validateSeed = (seed: string): { x_length: number; y_length: number; total_mines: number; valid_seed: string } | undefined => {
+    const is_valid_seed: boolean = /^([0-9]+)-([0-9]+)-([0-9]+)-([0-9A-Za-z]+)$/.test(seed)
+
+    if (is_valid_seed) {
+        const splitted: string[] = seed.split('-')
+        const x_length: number = +splitted[0] <= MAX_X ? +splitted[0] : MAX_X
+        const y_length: number = +splitted[1] <= MAX_Y ? +splitted[1] : MAX_Y
+        const max_mines: number = calculateMaximumMineCount(x_length, y_length)
+        const total_mines: number = +splitted[2] <= max_mines ? +splitted[2] : max_mines
+
+        return {
+            x_length,
+            y_length,
+            total_mines,
+            valid_seed: splitted[3],
+        }
+    }
+    return undefined
+}
+
+const generateRandomSeed = (): string => {
+    return Math.random()
+        .toString(36)
+        .substr(2, 10)
+}
+
+const returnSeed = (x_length: number, y_length: number, total_mines: number, input_seed: string): string => {
+    return `${x_length}-${y_length}-${total_mines}-${input_seed}`
+}
+
+const createMines = (seed: string, total_mines: number, total_tiles: number): number[] => {
     const mines: number[] = []
+    const rand = gen.create(seed)
 
     while (mines.length < total_mines) {
-        const x = rand.range(x_length * y_length) + 1
+        const x = rand.intBetween(1, total_tiles)
         if (mines.indexOf(x) === -1) mines.push(x)
     }
 
+    rand.done()
     return mines
+}
+
+const getMinesFromDimensions = (
+    input_x_length: number,
+    input_y_length: number,
+    input_total_mines: number,
+): { x_length: number; y_length: number; total_mines: number; mines: number[]; seed: string } => {
+    const random_seed: string = generateRandomSeed()
+    const x_length = input_x_length <= MAX_X ? input_x_length : MAX_X
+    const y_length = input_y_length <= MAX_Y ? input_y_length : MAX_Y
+    const total_tiles: number = x_length * y_length
+    const max_mines: number = calculateMaximumMineCount(x_length, y_length)
+    const total_mines = input_total_mines <= max_mines ? input_total_mines : max_mines
+    const mines: number[] = createMines(random_seed, total_mines, total_tiles)
+    const seed = returnSeed(x_length, y_length, total_mines, random_seed)
+
+    return { x_length, y_length, total_mines, mines, seed }
+}
+
+const getMinesFromSeed = (input_seed: string): { x_length: number; y_length: number; total_mines: number; mines: number[]; seed: string } | undefined => {
+    const validated_seed = validateSeed(input_seed)
+    if (!validated_seed) return undefined
+    const { x_length, y_length, total_mines, valid_seed } = validated_seed
+    const total_tiles: number = x_length * y_length
+    const mines: number[] = createMines(valid_seed, total_mines, total_tiles)
+    const seed = returnSeed(x_length, y_length, total_mines, valid_seed)
+
+    return { x_length, y_length, total_mines, mines, seed }
+}
+
+const getMinesFromGameMode = (game_mode_name: PresetGame['name']): { x_length: number; y_length: number; total_mines: number; mines: number[]; seed: string } => {
+    const random_seed = generateRandomSeed()
+    const { x_length, y_length, total_mines, total_tiles } = preset_games.find((mode: PresetGame) => mode.name === game_mode_name) || preset_games[0]
+    const mines: number[] = createMines(random_seed, total_mines, total_tiles)
+    const seed = returnSeed(x_length, y_length, total_mines, random_seed)
+
+    return { x_length, y_length, total_mines, mines, seed }
 }
 
 const getTiles = (x_length: number, y_length: number, mines: number[]): Tile[] => {
@@ -123,23 +222,27 @@ const getZeroGroups = (x_length: number, y_length: number, grid: Tile[]): ZeroGr
 }
 
 export const createGrid = (
-    x_length: number,
-    y_length: number,
-    total_mines: number,
+    game_mode: GameMode,
 ): {
+    x_length: number
+    y_length: number
+    total_mines: number
+    seed: string
     grid: Tile[]
     zero_groups: ZeroGroup[]
 } => {
-    // TODO: set x_length and y_length as globals so they don't have to be passed into every function
+    let res = null
 
-    const mines: number[] = getMines(x_length, y_length, total_mines)
+    if (game_mode.mode === 'specified' && game_mode.x_length && game_mode.y_length && game_mode.total_mines) res = getMinesFromDimensions(game_mode.x_length, game_mode.y_length, game_mode.total_mines)
+    else if (game_mode.mode === 'seed' && game_mode.seed) res = getMinesFromSeed(game_mode.seed) || getMinesFromGameMode('beginner')
+    else if (game_mode.mode === 'preset' && game_mode.preset_name) res = getMinesFromGameMode(game_mode.preset_name)
+    else res = getMinesFromGameMode('beginner')
+
+    const { x_length, y_length, total_mines, mines, seed } = res
+
     const tiles: Tile[] = getTiles(x_length, y_length, mines)
     const grid: Tile[] = getTouchingValues(x_length, y_length, tiles)
     const zero_groups: ZeroGroup[] = getZeroGroups(x_length, y_length, grid)
 
-    return { grid, zero_groups }
-}
-
-export const fakeFunction = (input: number) => {
-    return input + 1
+    return { x_length, y_length, total_mines, seed, grid, zero_groups }
 }

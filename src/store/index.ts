@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Tile, ZeroGroup, GameStatus, ClickType } from '@/types'
+import { Tile, ZeroGroup, GameStatus, ClickType, GameMode } from '@/types'
 import { createGrid } from '@/scripts'
 
 const _ = require('lodash')
@@ -16,6 +16,7 @@ export default new Vuex.Store({
             x_length: 10,
             y_length: 10,
             mines: 15,
+            seed: '',
             status: 'playing',
         } as GameStatus,
     },
@@ -34,10 +35,16 @@ export default new Vuex.Store({
         },
     },
     mutations: {
-        setupGame(state) {
-            const { grid, zero_groups } = createGrid(state.game.x_length, state.game.y_length, state.game.mines)
+        setupGame(state, game_mode: GameMode) {
+            const { x_length, y_length, total_mines, grid, zero_groups, seed } = createGrid(game_mode)
+
+            state.game.x_length = x_length
+            state.game.y_length = y_length
+            state.game.mines = total_mines
+            state.game.seed = seed
             state.grid = grid
             state.zero_groups = zero_groups
+            state.game.status = 'playing'
         },
         setTileStatus(state, { tile_id, status }) {
             for (const tile of state.grid) {
@@ -74,9 +81,9 @@ export default new Vuex.Store({
     },
     actions: {
         leftClickTile({ state, commit, dispatch }, tile_id: number) {
-            for (const tile of state.grid) {
-                if (tile.id === tile_id) {
-                    if (state.game.status === 'playing') {
+            if (state.game.status === 'playing') {
+                for (const tile of state.grid) {
+                    if (tile.id === tile_id) {
                         if (state.click_type === 'normal') {
                             if (tile.status === 'flagged' || tile.status === 'uncertain') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'unclicked' })
@@ -107,9 +114,9 @@ export default new Vuex.Store({
             dispatch('checkGameStatus')
         },
         rightClickTile({ state, commit, dispatch }, tile_id: number) {
-            for (const tile of state.grid) {
-                if (tile.id === tile_id) {
-                    if (state.game.status === 'playing') {
+            if (state.game.status === 'playing') {
+                for (const tile of state.grid) {
+                    if (tile.id === tile_id) {
                         if (state.click_type === 'normal') {
                             if (tile.status === 'unclicked') {
                                 commit('setTileStatus', { tile_id: tile.id, status: 'flagged' })
@@ -141,9 +148,9 @@ export default new Vuex.Store({
                 }
             }
         },
-        resetGrid({ commit }) {
+        resetGrid({ state, commit }) {
             commit('wipeGrid')
-            commit('setupGame')
+            commit('setupGame', { mode: 'specified', x_length: state.game.x_length, y_length: state.game.y_length, total_mines: state.game.mines })
             commit('setClickType', 'normal')
         },
     },
