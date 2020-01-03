@@ -3,7 +3,7 @@ import { Tile, TileGroup, ZeroGroup, GameMode, PresetGame } from '@/types'
 const _ = require('lodash')
 const gen = require('random-seed')
 
-const GAME_MODES: PresetGame[] = [
+export const preset_games: PresetGame[] = [
     {
         name: 'beginner',
         x_length: 9,
@@ -103,7 +103,7 @@ const getMinesFromSeed = (input_seed: string): { x_length: number; y_length: num
 
 const getMinesFromGameMode = (game_mode_name: PresetGame['name']): { x_length: number; y_length: number; total_mines: number; mines: number[]; seed: string } => {
     const random_seed = generateRandomSeed()
-    const { x_length, y_length, total_mines, total_tiles } = GAME_MODES.find((mode: PresetGame) => mode.name === game_mode_name) || GAME_MODES[0]
+    const { x_length, y_length, total_mines, total_tiles } = preset_games.find((mode: PresetGame) => mode.name === game_mode_name) || preset_games[0]
     const mines: number[] = createMines(random_seed, total_mines, total_tiles)
     const seed = returnSeed(x_length, y_length, total_mines, random_seed)
 

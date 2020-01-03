@@ -1,29 +1,32 @@
 <template>
     <div class="controls" oncontextmenu="return false;">
-        <div class="game_mode" @click="selectGameMode('beginner')">
-            <span><b>Beginner</b></span>
-            <hr />
-            <span>9 x 9, 10 mines</span>
-        </div>
-        <div class="game_mode" @click="selectGameMode('intermediate')">
-            <span><b>Intermediate</b></span>
-            <hr />
-            <span>16 x 16, 40 mines</span>
-        </div>
-        <div class="game_mode" @click="selectGameMode('expert')">
-            <span><b>Expert</b></span>
-            <hr />
-            <span>30 x 16, 99 mines</span>
+        <div v-for="preset in presets" v-bind:key="preset">
+            <div class="game_mode" @click="selectGameMode(preset.name)">
+                <b>{{ preset.name }}</b>
+                <hr />
+                <span>{{ preset.specs }}</span>
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { GameStatus, GameMode } from '@/types'
+import { GameStatus, GameMode, PresetGame, PresetGameString } from '@/types'
+import { preset_games } from '@/scripts'
 
 export default Vue.extend({
     name: 'PresetControls',
+    data() {
+        return {
+            presets: [] as PresetGameString[],
+        }
+    },
+    created() {
+        preset_games.forEach((preset: PresetGame) => {
+            this.presets.push({ name: preset.name, specs: `${preset.x_length} x ${preset.y_length}, ${preset.total_mines} mines` })
+        })
+    },
     methods: {
         selectGameMode(preset_name: GameMode['preset_name']) {
             this.$store.commit('setupGame', { mode: 'preset', preset_name } as GameMode)

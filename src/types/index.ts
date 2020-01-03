@@ -37,6 +37,11 @@ export interface PresetGame {
     total_tiles: number
 }
 
+export interface PresetGameString {
+    name: PresetGameName
+    specs: string
+}
+
 export interface GameMode {
     mode: 'preset' | 'specified' | 'seed'
     x_length?: number
