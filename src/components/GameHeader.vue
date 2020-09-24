@@ -1,6 +1,7 @@
 <template>
     <div class="header" oncontextmenu="return false;">
         <p class="title">Minesweeper</p>
+        <FlagCount />
         <ClickTypeButton />
         <ResetButton />
     </div>
@@ -11,13 +12,14 @@ import Vue from 'vue'
 import { GameStatus } from '@/types'
 import buttonTypes from '@/components/buttons'
 
-const { ClickTypeButton, ResetButton } = buttonTypes
+const { ClickTypeButton, ResetButton, FlagCount } = buttonTypes
 
 export default Vue.extend({
     name: 'GameHeader',
     components: {
         ClickTypeButton,
         ResetButton,
+        FlagCount,
     },
     props: {
         game: {
