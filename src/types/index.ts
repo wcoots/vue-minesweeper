@@ -25,6 +25,7 @@ export interface GameStatus {
     mines: number
     seed: string
     status: 'playing' | 'lost' | 'won'
+    flag_count: number
 }
 
 type PresetGameName = 'beginner' | 'intermediate' | 'expert'
