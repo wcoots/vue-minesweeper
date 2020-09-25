@@ -35,26 +35,12 @@ export default Vue.extend({
         },
     },
     watch: {
-        // gameInfo: {
-        //     handler: (val: GameStatus, oldVal: GameStatus) => {
-        //         console.log('OLD VALUE:')
-        //         console.log(`status: ${oldVal.status}`)
-        //         console.log(`seed: ${oldVal.seed}`)
-        //         console.log('NEW VALUE')
-        //         console.log(`status: ${val.status}`)
-        //         console.log(`seed: ${val.seed}`)
-        //         if (val.status !== 'playing' && oldVal.status === 'playing') {
-        //             console.log('END TIMER')
-        //             // this.endTimer()
-        //         } else if (val.status === 'playing' && val.seed !== oldVal.seed) {
-        //             console.log('START TIMER')
-        //             // this.startTimer()
-        //         }
-        //     },
-        //     deep: true,
-        // },
-        'gameInfo.seed': (val: GameStatus, oldVal: GameStatus) => {
-            console.log('seed change')
+        'gameInfo.seed': {
+            handler: (val: GameStatus, oldVal: GameStatus) => {
+                console.log('seed change')
+                this.endTimer()
+            },
+            deep: true,
         },
         'gameInfo.status': (val: GameStatus, oldVal: GameStatus) => {
             console.log('status change')

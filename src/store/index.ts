@@ -18,6 +18,7 @@ export default new Vuex.Store({
             mines: 15,
             seed: '',
             status: 'playing',
+            flag_count: 0,
         } as GameStatus,
     },
     getters: {
@@ -49,6 +50,11 @@ export default new Vuex.Store({
         setTileStatus(state, { tile_id, status }) {
             for (const tile of state.grid) {
                 if (tile.id === tile_id) {
+                    if (status === 'flagged') {
+                        state.game.flag_count += 1
+                    } else if (tile.status === 'flagged') {
+                        state.game.flag_count -= 1
+                    }
                     tile.status = status
                 }
             }
@@ -77,6 +83,7 @@ export default new Vuex.Store({
         },
         wipeGrid(state) {
             state.game.status = 'playing'
+            state.game.flag_count = 0
             for (const tile of state.grid) {
                 tile.status = 'unclicked'
             }
