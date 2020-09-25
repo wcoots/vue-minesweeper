@@ -36,7 +36,7 @@ export default Vue.extend({
     },
     watch: {
         'gameInfo.seed': {
-            handler: (val: GameStatus, oldVal: GameStatus) => {
+            handler: function(val: GameStatus, oldVal: GameStatus) {
                 console.log('seed change')
                 this.endTimer()
             },
