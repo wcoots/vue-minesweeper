@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Tile, ZeroGroup, GameStatus, ClickType, GameMode } from '@/types'
+import { Tile, ZeroGroup, GameStatus, ClickType, PresetName, GameModeName } from '@/types'
 import { createGrid } from '@/scripts'
 
 const _ = require('lodash')
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
     state: {
         grid: [] as Tile[],
         zero_groups: [] as ZeroGroup[],
@@ -36,7 +36,15 @@ export default new Vuex.Store({
         },
     },
     mutations: {
-        setupGame(state, game_mode: GameMode) {
+        setupGame(state) {
+            const game_mode_name = localStorage.getItem('game_mode_name') as GameModeName
+            const preset_name = localStorage.getItem('preset_name') as PresetName
+
+            const game_mode = {
+                mode: game_mode_name || GameModeName.PRESET,
+                preset_name: preset_name || PresetName.BEGINNER,
+            }
+
             const { x_length, y_length, total_mines, grid, zero_groups, seed } = createGrid(game_mode)
 
             state.game.x_length = x_length
@@ -164,3 +172,5 @@ export default new Vuex.Store({
     },
     modules: {},
 })
+
+export default store

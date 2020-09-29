@@ -1,25 +1,25 @@
-import { Tile, TileGroup, ZeroGroup, GameMode, PresetGame } from '@/types'
+import { Tile, TileGroup, ZeroGroup, GameMode, PresetGame, PresetName } from '@/types'
 
 const _ = require('lodash')
 const gen = require('random-seed')
 
 export const preset_games: PresetGame[] = [
     {
-        name: 'beginner',
+        name: PresetName.BEGINNER,
         x_length: 9,
         y_length: 9,
         total_mines: 10,
         total_tiles: 81,
     },
     {
-        name: 'intermediate',
+        name: PresetName.INTERMEDIATE,
         x_length: 16,
         y_length: 16,
         total_mines: 40,
         total_tiles: 256,
     },
     {
-        name: 'expert',
+        name: PresetName.EXPERT,
         x_length: 30,
         y_length: 16,
         total_mines: 99,
@@ -234,9 +234,9 @@ export const createGrid = (
     let res = null
 
     if (game_mode.mode === 'specified' && game_mode.x_length && game_mode.y_length && game_mode.total_mines) res = getMinesFromDimensions(game_mode.x_length, game_mode.y_length, game_mode.total_mines)
-    else if (game_mode.mode === 'seed' && game_mode.seed) res = getMinesFromSeed(game_mode.seed) || getMinesFromGameMode('beginner')
+    else if (game_mode.mode === 'seed' && game_mode.seed) res = getMinesFromSeed(game_mode.seed) || getMinesFromGameMode(PresetName.BEGINNER)
     else if (game_mode.mode === 'preset' && game_mode.preset_name) res = getMinesFromGameMode(game_mode.preset_name)
-    else res = getMinesFromGameMode('beginner')
+    else res = getMinesFromGameMode(PresetName.BEGINNER)
 
     const { x_length, y_length, total_mines, mines, seed } = res
 

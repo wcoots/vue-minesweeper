@@ -8,8 +8,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Tyle from './Tile.vue'
 import { Tile } from '@/types'
+import Tyle from './Tile.vue'
 
 export default Vue.extend({
     name: 'Row',

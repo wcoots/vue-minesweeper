@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { GameStatus, GameMode, PresetGame, PresetGameString } from '@/types'
+import { GameStatus, GameMode, PresetGame, PresetGameString, PresetName } from '@/types'
 import { preset_games } from '@/scripts'
 
 export default Vue.extend({
@@ -28,7 +28,8 @@ export default Vue.extend({
         })
     },
     methods: {
-        selectGameMode(preset_name: GameMode['preset_name']) {
+        selectGameMode(preset_name: PresetName) {
+            localStorage.setItem('preset_name', preset_name)
             this.$store.commit('setupGame', { mode: 'preset', preset_name } as GameMode)
         },
     },

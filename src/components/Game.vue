@@ -9,11 +9,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { GameStatus, GameMode } from '@/types'
 import GameHeader from './GameHeader.vue'
 import Grid from './Grid.vue'
 import GameFooter from './GameFooter.vue'
 import GameControls from './GameControls.vue'
-import { GameStatus, GameMode } from '@/types'
 
 export default Vue.extend({
     name: 'Game',
@@ -24,9 +24,7 @@ export default Vue.extend({
         GameControls,
     },
     created() {
-        // this.$store.commit('setupGame', { mode: 'specified', x_length: 3, y_length: 3, total_mines: 5 } as GameMode)
-        // this.$store.commit('setupGame', { mode: 'seed', seed: '10-10-10-mmmmmmmm' } as GameMode)
-        this.$store.commit('setupGame', { mode: 'preset', preset_name: 'beginner' } as GameMode)
+        this.$store.commit('setupGame')
     },
     computed: {
         game(): GameStatus {

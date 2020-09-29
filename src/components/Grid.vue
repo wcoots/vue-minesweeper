@@ -8,8 +8,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Row from './Row.vue'
 import { Tile, ZeroGroup, GameStatus } from '@/types'
+import Row from './Row.vue'
 
 export default Vue.extend({
     name: 'Grid',

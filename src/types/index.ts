@@ -28,10 +28,14 @@ export interface GameStatus {
     flag_count: number
 }
 
-type PresetGameName = 'beginner' | 'intermediate' | 'expert'
+export enum PresetName {
+    BEGINNER = 'beginner',
+    INTERMEDIATE = 'intermediate',
+    EXPERT = 'expert',
+}
 
 export interface PresetGame {
-    name: PresetGameName
+    name: PresetName
     x_length: number
     y_length: number
     total_mines: number
@@ -39,15 +43,21 @@ export interface PresetGame {
 }
 
 export interface PresetGameString {
-    name: PresetGameName
+    name: PresetName
     specs: string
 }
 
 export interface GameMode {
-    mode: 'preset' | 'specified' | 'seed'
+    mode: GameModeName
     x_length?: number
     y_length?: number
     total_mines?: number
-    preset_name?: PresetGameName
+    preset_name?: PresetName
     seed?: string
+}
+
+export enum GameModeName {
+    PRESET = 'preset',
+    SPECIFIED = 'specified',
+    SEED = 'seed',
 }
