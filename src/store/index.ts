@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import _ from 'lodash'
+
 import { Tile, ZeroGroup, GameStatus, ClickType, GameMode } from '@/types'
 import { createGrid } from '@/scripts'
-
-const _ = require('lodash')
 
 Vue.use(Vuex)
 
@@ -22,16 +22,16 @@ export default new Vuex.Store({
         } as GameStatus,
     },
     getters: {
-        getTileInfo: state => (tile_id: number): Tile | undefined => {
-            return state.grid.find(tile => tile.id === tile_id)
+        getTileInfo: (state) => (tile_id: number): Tile | undefined => {
+            return state.grid.find((tile: Tile) => tile.id === tile_id)
         },
-        getClickType: state => (): ClickType => {
+        getClickType: (state) => (): ClickType => {
             return state.click_type
         },
-        getGameInfo: state => (): GameStatus => {
+        getGameInfo: (state) => (): GameStatus => {
             return state.game
         },
-        getGrid: state => (): Tile[] => {
+        getGrid: (state) => (): Tile[] => {
             return state.grid
         },
     },

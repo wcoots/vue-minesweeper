@@ -1,3 +1,18 @@
+export interface SeedInformation {
+    x_length: number
+    y_length: number
+    total_mines: number
+    seed: string
+}
+
+export interface MineDistribution {
+    x_length: number
+    y_length: number
+    total_mines: number
+    mines: number[]
+    seed: string
+}
+
 export interface Tile {
     id: number
     row: number
@@ -28,7 +43,7 @@ export interface GameStatus {
     flag_count: number
 }
 
-type PresetGameName = 'beginner' | 'intermediate' | 'expert'
+export type PresetGameName = 'beginner' | 'intermediate' | 'expert'
 
 export interface PresetGame {
     name: PresetGameName

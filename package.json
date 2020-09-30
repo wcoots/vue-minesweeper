@@ -10,10 +10,12 @@
         "testscript": "node src/test"
     },
     "dependencies": {
+        "@types/lodash": "^4.14.161",
+        "@types/random-seed": "^0.3.3",
         "core-js": "^3.4.3",
         "eslint-config-prettier": "^6.7.0",
         "eslint-plugin-prettier": "^3.1.1",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.20",
         "random-seed": "^0.3.0",
         "register-service-worker": "^1.6.2",
         "vue": "^2.6.10",
